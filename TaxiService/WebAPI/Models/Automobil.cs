@@ -7,11 +7,11 @@ namespace WebAPI.Models
 {
     public class Automobil
     {
-        Vozac vozacAutomobila;
-        string godiste;
-        string registracija;
-        string brojTaksiVozila;
-        TipAutomobila tip;
+        private Vozac vozacAutomobila;
+        private string godiste;
+        private string registracija;
+        private string brojTaksiVozila;
+        private TipAutomobila tip;
 
         public Vozac VozacAutomobila { get => vozacAutomobila; set => vozacAutomobila = value; }
         public string Godiste { get => godiste; set => godiste = value; }

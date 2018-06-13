@@ -1,9 +1,40 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Index page</title>
+    <title>Login page</title>
+    <meta charset="utf-8" />
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#logovanje").click(function () {
+                //alert("asdadasd");
+                //window.location.replace("service.html");
+
+                
+            });
+        });
+    </script>
 </head>
 <body>
-    <h1>Index page</h1>
+    <h1>Login page</h1>
+
+    <form method="post" action="/api/login">
+        <table border="1">
+            <tr>
+                <th>Korisnicko ime:</th>
+                <td><input type="text" name="korisnickoIme" /></td>
+            </tr>
+            <tr>
+                <th>Loinka:</th>
+                <td><input type="password" name="lozinka" /></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Login"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <button id="logovanje2">dugmence</button>
 </body>
 </html>

@@ -7,11 +7,11 @@ namespace WebAPI.Models
 {
     public class Komentar
     {
-        string opis;
-        DateTime datumObjave;
-        Korisnik kreatorKomentara;
-        Voznja komentarisanaVoznja;
-        int ocena;
+        private string opis;
+        private DateTime datumObjave;
+        private Korisnik kreatorKomentara;
+        private Voznja komentarisanaVoznja;
+        private int ocena;
 
         public string Opis { get => opis; set => opis = value; }
         public DateTime DatumObjave { get => datumObjave; set => datumObjave = value; }
