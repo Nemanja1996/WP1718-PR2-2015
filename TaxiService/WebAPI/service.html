@@ -1,10 +1,173 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <title>Taxi service</title>
     <meta charset="utf-8" />
-    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var tip = "";
+            if (localStorage.Ulogovan != "null") {
+                if (JSON.parse(localStorage.Ulogovan).Uloga == "Dispecer") {
+                    $("#musterija").hide();
+                    $("#vozac").hide();
+                    tip = "#printDispecerData"
+                }
+                else if (JSON.parse(localStorage.Ulogovan).Uloga == "Korisnik") {
+                    $("#dispecer").hide();
+                    $("#vozac").hide();
+                    tip = "#printMusterijaData"
+                }
+                else if (JSON.parse(localStorage.Ulogovan).Uloga == "Vozac") {
+                    $("#musterija").hide();
+                    $("#dispecer").hide();
+
+                    var korisnikReg = JSON.parse(localStorage.Ulogovan);
+
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/api/Vozac/' + JSON.parse(localStorage.Ulogovan).KorisnickoIme,
+                        data: JSON.stringify(korisnikReg),
+                        contentType: 'application/json;charset=utf-8',
+                        dataType: 'json',
+                        success: function (data) {
+                            var korisnik = JSON.parse(localStorage.Ulogovan);
+                            korisnik.Lokacija = data;
+                            localStorage.Ulogovan = JSON.stringify(korisnik);
+                        }
+
+                    });
+                    tip = "#printVozacData"
+                }
+            }
+            else {
+                $(location).attr('href', 'index.html');
+                alert("Niste ulogovani");
+            }
+
+            $("div").on("click", "#userData", function () {
+                let korisnikLog = JSON.parse(localStorage.Ulogovan);
+                let txt = "";
+
+                txt += "<table border='1'>"
+                txt += "<tr><th colspan='2'>Podaci o korisniku</th></tr>"
+                txt += "<tr><th>Ime:</th><td>" + korisnikLog.Ime + "</td></tr>"
+                txt += "<tr><th>Prezime:</th><td>" + korisnikLog.Prezime + "</td></tr>";
+                txt += "<tr><th>Pol:</th><td>" + korisnikLog.Pol + "</td></tr>";
+                txt += "<tr><th>Jmbg:</th><td>" + korisnikLog.Jmbg + "</td></tr>";
+                txt += "<tr><th>Korisnicko ime:</th><td>" + korisnikLog.KorisnickoIme + "</td></tr>";
+                txt += "<tr><th>Lozinka:</th><td>" + korisnikLog.Lozinka + "</td></tr>";
+                txt += "<tr><th>Telefon:</th><td>" + korisnikLog.Telefon + "</td></tr>";
+                txt += "<tr><th>Email:</th><td>" + korisnikLog.Email + "</td></tr>";
+                if (JSON.parse(localStorage.Ulogovan).Uloga == "Vozac") {
+                    txt += "<tr><th colspan='2'>Trenutna lokacija</th></tr>";
+                    txt += "<tr><th>Koordinate:</th><td> x: " + korisnikLog.Lokacija.X + " Y: " + korisnikLog.Lokacija.Y + "</td></tr>";
+                    txt += "<tr><th>Adresa:</th><td> Ulica: " + korisnikLog.Lokacija.Adresa.UlicaBroj + " Grad: " + korisnikLog.Lokacija.Adresa.NaseljenoMestoBroj + "</td></tr>";
+                }
+                txt += "<tr><td><button id='izmenaPolja'>Izmeni</button></td></tr>";
+                txt += "</table>"
+                $(tip).html(txt);
+
+            });
+
+
+            $("div").on("click", "#izmenaPolja", function () {
+
+                let korisnikLog = JSON.parse(localStorage.Ulogovan);
+                let txt = "";
+
+                txt += "<table border='1'>"
+                txt += "<tr><th colspan='2'>Podaci o korisniku</th></tr>"
+                txt += "<tr><th>Ime:</th><td><input type='text' id='imeIzmena' value='" + korisnikLog.Ime + "'/></td></tr>";
+                txt += "<tr><th>Prezime:</th><td><input type='text' id='prezimeIzmena' value='" + korisnikLog.Prezime + "'/></td></tr>";
+                txt += "<tr><th> Pol:</th><td><input type='radio' id='pol' value='M' id='Pol1' />M<input type='radio' name='pol' value='Z' id='Pol2'/>Z</td></tr>";
+                txt += "<tr><th>Jmbg:</th><td><input type='text' id='jmbgIzmena' value='" + korisnikLog.Jmbg + "'/></td></tr>";
+                txt += "<tr><th>Korisnicko ime:</th><td><input type='text' id='korisnickoImeIzmena' value='" + korisnikLog.KorisnickoIme + "'/></td></tr>";
+                txt += "<tr><th>Lozinka:</th><td><input type='text' id='lozinkaIzmena' value='" + korisnikLog.Lozinka + "'/></td></tr>";
+                txt += "<tr><th>Telefon:</th><td><input type='text' id='telefonIzmena' value='" + korisnikLog.Telefon + "'/></td></tr>";
+                txt += "<tr><th>Email:</th><td><input type='text' id='emailIzmena' value='" + korisnikLog.Email + "'/></td></tr>";
+                txt += "<tr><td> <button id='userData'>Ponisti</button></td><td><button id='posaljiPromene'>Izmeni</button></td></tr>";
+                txt += "</table>"
+                $(tip).html(txt);
+            });
+
+            $("#logOut").click(function () {
+                localStorage.Ulogovan = null;
+                $(location).attr('href', 'index.html');
+            });
+
+            $("div").on("click", "#posaljiPromene", function () {
+                let pol1;
+                if ($('#Pol1').prop('checked', true)) {
+                    pol1 = 'M';
+                } else if ($('#Pol2').prop('checked', true)) {
+                    pol1 = 'Z';
+                }
+
+                let korisnikReg = {
+                    ime: $('#imeIzmena').val(),
+                    prezime: $('#prezimeIzmena').val(),
+                    pol: pol1,
+                    jmbg: $('#jmbgIzmena').val(),
+                    korisnickoIme: $('#korisnickoImeIzmena').val(),
+                    lozinka: $('#lozinkaIzmena').val(),
+                    telefon: $('#telefonIzmena').val(),
+                    email: $('#emailIzmena').val()
+                }
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/api/Musterija/' + JSON.parse(localStorage.Ulogovan).KorisnickoIme,
+                    data: JSON.stringify(korisnikReg),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (!data) {
+                            alert("Korisnicko ime vec postoji, neuspesna promena!");
+                        } else {
+                            var korisnik = JSON.parse(localStorage.Ulogovan);
+                            korisnik.KorisnickoIme = korisnikReg.korisnickoIme;
+                            localStorage.Ulogovan = JSON.stringify(korisnik);
+                            alert("Uspesno ste izmenili korisnicke informacije!");
+                        }
+                    }
+
+                });
+
+            });
+        });
+    </script>
 </head>
 <body>
-    <h1>Stranica glavne aplikacije....</h1>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a id="userData"><span class="glyphicon glyphicon-user"></span> User</a></li>
+                    <li><a id="logOut"><span class="glyphicon glyphicon-log-out"></span> LogOut</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="musterija">
+        <h1>Stranica za musteriju</h1>
+        <div id="printMusterijaData">
+        </div>
+    </div>
+
+    <div id="dispecer">
+        <h1>Stranica za dispecera</h1>
+        <div id="printDispecerData">
+        </div>
+    </div>
+
+    <div id="vozac">
+        <h1>Stranica za vozaca</h1>
+        <div id="printVozacData">
+        </div>
+    </div>
 </body>
 </html>

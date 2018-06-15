@@ -3,38 +3,169 @@
 <head>
     <title>Login page</title>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
     <script src="Scripts/jquery-1.10.2.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#logovanje").click(function () {
-                //alert("asdadasd");
-                //window.location.replace("service.html");
+            $("#div2").hide();
 
-                
+            $("#action1").click(function () {
+                $("#div1").hide();
+                $("#div2").show();
             });
+
+
+            $("#action2").click(function () {
+                $("#div2").hide();
+                $("#div1").show();
+            });
+
+            $("#logovanje").click(function () {
+                let korisnikLog = {
+                    korisnickoIme: `${$('#korisnickoImeLogin').val()}`,
+                    lozinka: `${$('#lozinkaLogin').val()}`
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/LogIn',
+                    data: JSON.stringify(korisnikLog),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data == null) {
+                            alert("Korisnicko ime ili lozinka je nevalidna!");
+                        } else {
+                            //redirektuj na glavnu
+                            localStorage.setItem("Ulogovan", JSON.stringify(data));
+                            $(location).attr('href', 'service.html');
+                        }
+                    }
+                })
+            });
+
+            $("#registracija").click(function () {
+                let pol1;
+                if ($('#Pol1').prop('checked', true)) {
+                    pol1 = 'M';
+                } else if ($('#Pol2').prop('checked', true)) {
+                    pol1 = 'Z';
+                }
+
+                let korisnikReg = {
+                    ime: `${$('#imeReg').val()}`,
+                    prezime: `${$('#prezimeReg').val()}`,
+                    pol : pol1,
+                    jmbg: `${$('#jmbgReg').val()}`,
+                    korisnickoIme: `${$('#korisnickoImeReg').val()}`,
+                    lozinka: `${$('#lozinkaReg').val()}`,
+                    telefon: `${$('#telefonReg').val()}`,
+                    email: `${$('#mailReg').val()}`
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/Registration',
+                    data: JSON.stringify(korisnikReg),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (!data) {
+                            alert("Korisnicko ime vec postoji!");
+                        } else {
+                            alert("Uspesno ste se registrovali!");
+                        }
+                    }
+                    
+                })
+
+            });
+
+
         });
     </script>
 </head>
 <body>
-    <h1>Login page</h1>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a id="action1"><span class="glyphicon glyphicon-registration-mark"></span> Sign Up</a></li>
+                    <li><a id="action2"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <form method="post" action="/api/login">
+    <div id="div1">
         <table border="1">
             <tr>
                 <th>Korisnicko ime:</th>
-                <td><input type="text" name="korisnickoIme" /></td>
+                <td><input type="text" name="korisnickoImeLogin"  id="korisnickoImeLogin"/></td>
             </tr>
             <tr>
                 <th>Loinka:</th>
-                <td><input type="password" name="lozinka" /></td>
+                <td><input type="password" name="lozinkaLogin" id="lozinkaLogin"/></td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="submit" value="Login"/>
+                    <button id="logovanje">LogIn</button>
                 </td>
             </tr>
         </table>
-    </form>
-    <button id="logovanje2">dugmence</button>
+    </div>
+
+    <div id="div2">
+        <table border="1">
+            <tr>
+                <th>Ime:</th>
+                <td><input type="text" name="ime" id="imeReg"/></td>
+            </tr>
+
+            <tr>
+                <th>Prezime:</th>
+                <td><input type="text" name="prezime" id="prezimeReg"/></td>
+            </tr>
+
+            <tr>
+                <th>Pol:</th>
+                <td>
+                    <input type="radio" name="pol" value="M" id="Pol1" />M
+                    <input type="radio" name="pol" value="Z" id="Pol2"/>Z
+                </td>
+            </tr>
+
+            <tr>
+                <th>JMBG:</th>
+                <td><input type="text" name="jmbg" id="jmbgReg"/></td>
+            </tr>
+
+            <tr>
+                <th>Korisnicko ime:</th>
+                <td><input type="text" name="korisnickoIme" id="korisnickoImeReg"/></td>
+            </tr>
+
+            <tr>
+                <th>Lozinka:</th>
+                <td><input type="text" name="lozinka" id="lozinkaReg"/></td>
+            </tr>
+
+            <tr>
+                <th>Telefon:</th>
+                <td><input type="tel" name="telefon" id="telefonReg"/></td>
+            </tr>
+
+            <tr>
+                <th>Email:</th>
+                <td><input type="email" name="email" id="mailReg"/></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button id="registracija">Registration</button>
+                </td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>

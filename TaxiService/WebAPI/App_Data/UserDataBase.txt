@@ -1,2 +1,4 @@
-﻿Nemanja Vasiljevic M 2312996790028 nemanja1996 23.12.1996 0641194648 nemanjav1996@hotmail.com Dispecer 0
-Dragana Kocic Z 0545778965587 dragica1996 05.10.1996 0645589878 dragica1996@gmail.com Dispecer 0
+Nemanja;Vasiljevic;M;2312996790028;nemanja1996;23.12.1996;0641194648;nemanjav1996@hotmail.com;Dispecer;[]
+Dragana;Kocic;Z;0545778965587;dragica1996;05.10.1996;0645589878;dragica1996@gmail.com;Dispecer;[]
+Ilija;Grk;M;2345778986657;ilija98;gajdobra98;0641194878;ilija@gmail.com;Korisnik;[]
+Vladimir;Krivosija;M;8795887456632;cimi94;cimara;0654489878;vlada@gmail.com;Vozac;[];[12,12,Heroja Jerkovica 19,Uzice 31000];[cimi94,2008,NS-201-TX,1,PutnickoVozilo]
