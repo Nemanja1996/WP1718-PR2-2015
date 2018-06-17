@@ -5,6 +5,53 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .absolute {
+            background-color: #ffff66;
+            opacity: 0.8;
+            border-radius: 6px;
+        }
+
+        input[type=text], input[type=password], input[type=tel], input[type=email], select {
+            width: 90%;
+            height: 25px;
+            padding: 12px 10px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .bg {
+            /* The image used */
+            background-image: url("taxi.jpg");
+            /* Full height */
+            height: 100%;
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        div.absolute {
+            position: absolute;
+            top: 80px;
+            right: 80px;
+            border: 3px solid #ffff66;
+        }
+
+        td, th {
+            height: 50px;
+
+        }
+    </style>
+
     <script src="Scripts/jquery-1.10.2.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -56,7 +103,7 @@
                 let korisnikReg = {
                     ime: `${$('#imeReg').val()}`,
                     prezime: `${$('#prezimeReg').val()}`,
-                    pol : pol1,
+                    pol: pol1,
                     jmbg: `${$('#jmbgReg').val()}`,
                     korisnickoIme: `${$('#korisnickoImeReg').val()}`,
                     lozinka: `${$('#lozinkaReg').val()}`,
@@ -77,7 +124,7 @@
                             alert("Uspesno ste se registrovali!");
                         }
                     }
-                    
+
                 })
 
             });
@@ -87,6 +134,7 @@
     </script>
 </head>
 <body>
+    <div class="bg">
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="myNavbar">
@@ -98,74 +146,78 @@
         </div>
     </nav>
 
-    <div id="div1">
-        <table border="1">
-            <tr>
-                <th>Korisnicko ime:</th>
-                <td><input type="text" name="korisnickoImeLogin"  id="korisnickoImeLogin"/></td>
-            </tr>
-            <tr>
-                <th>Loinka:</th>
-                <td><input type="password" name="lozinkaLogin" id="lozinkaLogin"/></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <button id="logovanje">LogIn</button>
-                </td>
-            </tr>
-        </table>
-    </div>
+    <div id="div1" class="absolute">
+        <h2>LogIn</h2>
+            <table>
+                <tr>
+                    <th>Korisnicko ime:</th>
+                    <td><input type="text" name="korisnickoImeLogin" id="korisnickoImeLogin"/></td>
+                </tr>
+                <tr>
+                    <th>Loinka:</th>
+                    <td><input type="password" name="lozinkaLogin" id="lozinkaLogin" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="right">
+                        <button id="logovanje">LogIn</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-    <div id="div2">
-        <table border="1">
+
+    <div id="div2" class="absolute">
+        <h2>Registration</h2>
+        <table>
             <tr>
                 <th>Ime:</th>
-                <td><input type="text" name="ime" id="imeReg"/></td>
+                <td><input type="text" name="ime" id="imeReg" /></td>
             </tr>
 
             <tr>
                 <th>Prezime:</th>
-                <td><input type="text" name="prezime" id="prezimeReg"/></td>
+                <td><input type="text" name="prezime" id="prezimeReg" /></td>
             </tr>
 
             <tr>
                 <th>Pol:</th>
                 <td>
                     <input type="radio" name="pol" value="M" id="Pol1" />M
-                    <input type="radio" name="pol" value="Z" id="Pol2"/>Z
+                    <input type="radio" name="pol" value="Z" id="Pol2" />Z
                 </td>
             </tr>
 
             <tr>
                 <th>JMBG:</th>
-                <td><input type="text" name="jmbg" id="jmbgReg"/></td>
+                <td><input type="text" name="jmbg" id="jmbgReg" /></td>
             </tr>
 
             <tr>
                 <th>Korisnicko ime:</th>
-                <td><input type="text" name="korisnickoIme" id="korisnickoImeReg"/></td>
+                <td><input type="text" name="korisnickoIme" id="korisnickoImeReg" /></td>
             </tr>
 
             <tr>
                 <th>Lozinka:</th>
-                <td><input type="text" name="lozinka" id="lozinkaReg"/></td>
+                <td><input type="text" name="lozinka" id="lozinkaReg" /></td>
             </tr>
 
             <tr>
                 <th>Telefon:</th>
-                <td><input type="tel" name="telefon" id="telefonReg"/></td>
+                <td><input type="tel" name="telefon" id="telefonReg" /></td>
             </tr>
 
             <tr>
                 <th>Email:</th>
-                <td><input type="email" name="email" id="mailReg"/></td>
+                <td><input type="email" name="email" id="mailReg" /></td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td colspan="2" align="right">
                     <button id="registracija">Registration</button>
                 </td>
             </tr>
         </table>
+    </div>
     </div>
 </body>
 </html>

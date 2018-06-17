@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
                }
             }
 
-            string korisnikUpis = korisnik.Ime + ";" + korisnik.Prezime + ";" + korisnik.Pol.ToString() + ";" + korisnik.Jmbg + ";" + korisnik.KorisnickoIme + ";" + korisnik.Lozinka + ";" + korisnik.Telefon + ";" + korisnik.Email + ";" + "Korisnik;" + "[]";
+            string korisnikUpis = "\n" + korisnik.Ime + ";" + korisnik.Prezime + ";" + korisnik.Pol.ToString() + ";" + korisnik.Jmbg + ";" + korisnik.KorisnickoIme + ";" + korisnik.Lozinka + ";" + korisnik.Telefon + ";" + korisnik.Email + ";" + "Korisnik;" + "[];[];[]";
             System.IO.File.AppendAllText(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"), korisnikUpis);
 
             return true;

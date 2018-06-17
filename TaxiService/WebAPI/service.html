@@ -4,6 +4,55 @@
     <title>Taxi service</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        html, body {
+            /* The image used */
+            background-image: url("taxi.jpg");
+            /* Full height */
+            height: 100%;
+            /*Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .absolute {
+            background-color: #ffff66;
+            opacity: 0.8;
+            border-radius: 6px;
+        }
+
+        input[type=text], input[type=password], input[type=tel], input[type=email], select {
+            width: 90%;
+            height: 25px;
+            padding: 12px 10px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+
+        div.absolute {
+            position: absolute;
+            top: 80px;
+            right: 80px;
+            border: 3px solid #ffff66;
+        }
+
+        td, th {
+            height: 50px;
+        }
+    </style>
+
 
     <script src="Scripts/jquery-1.10.2.js"></script>
     <script type="text/javascript">
@@ -28,7 +77,7 @@
 
                     $.ajax({
                         type: 'PUT',
-                        url: '/api/Vozac/' + JSON.parse(localStorage.Ulogovan).KorisnickoIme,
+                        url: 'api/Vozac/PreuzmiLokaciju/' + JSON.parse(localStorage.Ulogovan).KorisnickoIme,
                         data: JSON.stringify(korisnikReg),
                         contentType: 'application/json;charset=utf-8',
                         dataType: 'json',
@@ -50,8 +99,8 @@
             $("div").on("click", "#userData", function () {
                 let korisnikLog = JSON.parse(localStorage.Ulogovan);
                 let txt = "";
-
-                txt += "<table border='1'>"
+                txt += "<div class='absolute'>"
+                txt += "<table>"
                 txt += "<tr><th colspan='2'>Podaci o korisniku</th></tr>"
                 txt += "<tr><th>Ime:</th><td>" + korisnikLog.Ime + "</td></tr>"
                 txt += "<tr><th>Prezime:</th><td>" + korisnikLog.Prezime + "</td></tr>";
@@ -61,13 +110,9 @@
                 txt += "<tr><th>Lozinka:</th><td>" + korisnikLog.Lozinka + "</td></tr>";
                 txt += "<tr><th>Telefon:</th><td>" + korisnikLog.Telefon + "</td></tr>";
                 txt += "<tr><th>Email:</th><td>" + korisnikLog.Email + "</td></tr>";
-                if (JSON.parse(localStorage.Ulogovan).Uloga == "Vozac") {
-                    txt += "<tr><th colspan='2'>Trenutna lokacija</th></tr>";
-                    txt += "<tr><th>Koordinate:</th><td> x: " + korisnikLog.Lokacija.X + " Y: " + korisnikLog.Lokacija.Y + "</td></tr>";
-                    txt += "<tr><th>Adresa:</th><td> Ulica: " + korisnikLog.Lokacija.Adresa.UlicaBroj + " Grad: " + korisnikLog.Lokacija.Adresa.NaseljenoMestoBroj + "</td></tr>";
-                }
-                txt += "<tr><td><button id='izmenaPolja'>Izmeni</button></td></tr>";
+                txt += "<tr><td><button type='button' id='izmenaPolja' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-pencil' ></span> Izmena</button ></td></tr>";
                 txt += "</table>"
+                txt += "</div>"
                 $(tip).html(txt);
 
             });
@@ -77,8 +122,8 @@
 
                 let korisnikLog = JSON.parse(localStorage.Ulogovan);
                 let txt = "";
-
-                txt += "<table border='1'>"
+                txt += "<div class='absolute'>"
+                txt += "<table>"
                 txt += "<tr><th colspan='2'>Podaci o korisniku</th></tr>"
                 txt += "<tr><th>Ime:</th><td><input type='text' id='imeIzmena' value='" + korisnikLog.Ime + "'/></td></tr>";
                 txt += "<tr><th>Prezime:</th><td><input type='text' id='prezimeIzmena' value='" + korisnikLog.Prezime + "'/></td></tr>";
@@ -88,12 +133,13 @@
                 txt += "<tr><th>Lozinka:</th><td><input type='text' id='lozinkaIzmena' value='" + korisnikLog.Lozinka + "'/></td></tr>";
                 txt += "<tr><th>Telefon:</th><td><input type='text' id='telefonIzmena' value='" + korisnikLog.Telefon + "'/></td></tr>";
                 txt += "<tr><th>Email:</th><td><input type='text' id='emailIzmena' value='" + korisnikLog.Email + "'/></td></tr>";
-                txt += "<tr><td> <button id='userData'>Ponisti</button></td><td><button id='posaljiPromene'>Izmeni</button></td></tr>";
+                txt += "<tr><td><button type='button' id='userData' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-remove' ></span> Izadji</button ></td><td><button type='button' id='posaljiPromene' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-floppy-disk' ></span> Sacuvaj</button ></td></tr>";
                 txt += "</table>"
+                txt += "</div>"
                 $(tip).html(txt);
             });
 
-            $("#logOut").click(function () {
+            $("div").on("click", "#logOut", function () {
                 localStorage.Ulogovan = null;
                 $(location).attr('href', 'index.html');
             });
@@ -137,37 +183,127 @@
                 });
 
             });
+
+            $("div").on("click", "#izmenaLokacije", function () {
+
+                let korisnikLog = JSON.parse(localStorage.Ulogovan);
+                let txt = "";
+                txt += "<div class='absolute'>"
+                txt += "<table>"
+                txt += "<tr><th colspan='2'>Trenutna lokacija</th></tr>";
+
+                txt += "<tr><th>Koordinate:</th><td><input type='text' id='xIzmena' value='" + korisnikLog.Lokacija.X + "'/></td><td><input type='text' id='yIzmena' value='" + korisnikLog.Lokacija.Y + "'/></td></tr>";
+                txt += "<tr><th>Ulica:</th><td><input type='text' id='ulicaIzmena' value='" + korisnikLog.Lokacija.Adresa.UlicaBroj + "'/></td></tr>";
+                txt += "<tr><th>Grad:</th><td><input type='text' id='gradIzmena' value='" + korisnikLog.Lokacija.Adresa.NaseljenoMestoBroj + "'/></td></tr>";
+                txt += "<tr><td><button type='button' id='location' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-remove' ></span> Izadji</button ></td><td><button type='button' id='posaljiPromeneLokacije' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-floppy-disk' ></span> Sacuvaj</button ></td></tr>";
+                txt += "</table>"
+                txt += "</div>"
+                $(tip).html(txt);
+            });
+
+            $("div").on("click", "#location", function () {
+
+                let korisnikLog = JSON.parse(localStorage.Ulogovan);
+                let txt = "";
+                txt += "<div class='absolute'>"
+                txt += "<table>"
+                txt += "<tr><th colspan='2'>Trenutna lokacija</th></tr>";
+                txt += "<tr><th>Koordinate:  </th><td> x: " + korisnikLog.Lokacija.X + " Y: " + korisnikLog.Lokacija.Y + "</td></tr>";
+                txt += "<tr><th>Ulica:</th><td>" + korisnikLog.Lokacija.Adresa.UlicaBroj + "</td></tr>";
+                txt += "<tr><th>Grad:</th><td>" + korisnikLog.Lokacija.Adresa.NaseljenoMestoBroj + "</td></tr>"
+                txt += "<tr><td><button type='button' id='izmenaLokacije' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-pencil' ></span> Izmena</button ></td></tr>";
+                txt += "</table>"
+                txt += "</div>"
+                $(tip).html(txt);
+            });
+
+            $("div").on("click", "#posaljiPromeneLokacije", function () {
+                let adresa = {
+                    NaseljenoMestoBroj: $("#gradIzmena").val(),
+                    UlicaBroj: $("#ulicaIzmena").val()
+                }
+
+                let Lokacija = {
+                    Adresa: adresa,
+                    X: $("#xIzmena").val(),
+                    Y: $("#yIzmena").val()
+                }
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/api/Vozac/LokacijaIzmena/' + JSON.parse(localStorage.Ulogovan).KorisnickoIme,
+                    data: JSON.stringify(Lokacija),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (!data) {
+                            alert("Greska pri promeni lokacije!");
+                        } else {
+                            var korisnik = JSON.parse(localStorage.Ulogovan);
+                            korisnik.Lokacija = Lokacija;
+                            localStorage.Ulogovan = JSON.stringify(korisnik);
+                            alert("Uspesno ste izmenili lokaciju!");
+                        }
+                    }
+
+                })
+                
+            });
         });
     </script>
 </head>
+
 <body>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a id="userData"><span class="glyphicon glyphicon-user"></span> User</a></li>
-                    <li><a id="logOut"><span class="glyphicon glyphicon-log-out"></span> LogOut</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+
+
 
     <div id="musterija">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a id="userData"><span class="glyphicon glyphicon-user"></span> User</a></li>
+                        <li><a id="logOut"><span class="glyphicon glyphicon-log-out"></span> LogOut</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
         <h1>Stranica za musteriju</h1>
         <div id="printMusterijaData">
         </div>
     </div>
 
-    <div id="dispecer">
-        <h1>Stranica za dispecera</h1>
-        <div id="printDispecerData">
+        <div id="dispecer">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a id="userData"><span class="glyphicon glyphicon-user"></span> User</a></li>
+                            <li><a id="logOut"><span class="glyphicon glyphicon-log-out"></span> LogOut</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <h1>Stranica za dispecera</h1>
+            <div id="printDispecerData">
+            </div>
         </div>
-    </div>
 
-    <div id="vozac">
-        <h1>Stranica za vozaca</h1>
-        <div id="printVozacData">
+        <div id="vozac">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a id="location"><span class="glyphicon glyphicon-map-marker"></span> Location</a></li>
+                            <li><a id="userData"><span class="glyphicon glyphicon-user"></span> User</a></li>
+                            <li><a id="logOut"><span class="glyphicon glyphicon-log-out"></span> LogOut</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <h1>Stranica za vozaca</h1>
+            <div id="printVozacData">
+            </div>
         </div>
-    </div>
 </body>
 </html>
