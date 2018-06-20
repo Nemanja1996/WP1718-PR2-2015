@@ -1,5 +1,5 @@
 Nemanja;Vasiljevic;M;2312996790028;nemanja1996;23.12.1996;0641194648;nemanjav1996@hotmail.com;Dispecer;[];[];[]
 Dragana;Kocic;Z;0545778965587;dragica1996;05.10.1996;0645589878;dragica1996@gmail.com;Dispecer;[];[];[]
-Ilija;Grk;M;2345778986657;ilija98;gajdobra98;0641194878;ilija@gmail.com;Korisnik;[];[];[]
-Vladimir;Krivosija;M;8795887456632;cimi94;cimara;0654489878;vlada@gmail.com;Vozac;[];[12,12,Heroja Jerkovica 19,Uzice 31000];[cimi94,2008,NS-201-TX,1,PutnickoVozilo]
+Ilija;Grk;M;2345778986657;grki98;gajdobra98;0641194878;ilija@gmail.com;Korisnik;[{6/20/2018 7:15:41 PM,#,#,Bulevar Oslobodjenja,Novi Sad,teretnoVozilo,grki98,,,,,,,0,{///},Kreirana}|{6/19/2018 4:25:59 PM,#,#,Bulevar Oslobodjenja,Novi Sad,PutnickoVozilo,ilija98,,,,,,,0,{///},Kreirana}|{6/18/2018 11:54:13 PM,#,#,Heroja Jerkovica 19,Uzice,PutnickoVozilo,ilija98,,,,,,,0,{///},Kreirana}|{6/18/2018 8:35:19 PM,#,#,Despota Stefana 7,Novi Sad,PutnickoVozilo,ilija98,,,,,,,0,{///},Kreirana}];[];[]
+Vladimir;Krivosija;M;8795887456632;cimi94;cimara;0654489878;vlada@gmail.com;Vozac;[];[13,12,Heroja Jerkovica 19,Uzice 31000];[cimi94,2008,NS-201-TX,1,PutnickoVozilo]
 Smiljana;Voj;M;5478996578895;smilja22;123123;0647789658;sm@gmail.com;Korisnik;[];[];[]

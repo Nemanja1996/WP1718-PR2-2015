@@ -10,8 +10,8 @@ namespace WebAPI.Controllers
 {
     public class VozacController : ApiController
     {
-        [HttpPut, ActionName("PreuzmiLokaciju")]
-        public Lokacija PutPreuzmiLokaciju(string id, [FromBody]Korisnik korisnik2)
+        [HttpGet]
+        public Lokacija Get(string id)
         {
             string[] lines = System.IO.File.ReadAllLines(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"));
             Lokacija retLokacija = null;
@@ -38,8 +38,8 @@ namespace WebAPI.Controllers
             return retLokacija;
         }
 
-        [HttpPut, ActionName("LokacijaIzmena")]
-        public bool PutLokacijaIzmena(string id, [FromBody]Lokacija lokacija)
+        [HttpPut]
+        public bool Put(string id, [FromBody]Lokacija lokacija)
         {
             string[] lines = System.IO.File.ReadAllLines(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"));
 
@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
             {
                 if (String.Equals(lines[i].Split(';')[4], id))
                 {
-                    string temp = lokacija.X + "," + lokacija.Y + "," + lokacija.Adresa.UlicaBroj + "," + lokacija.Adresa.NaseljenoMestoBroj;
+                    string temp = "[" + lokacija.X + "," + lokacija.Y + "," + lokacija.Adresa.UlicaBroj + "," + lokacija.Adresa.NaseljenoMestoBroj + "]";
                     string line = lines[i].Split(';')[0] + ";" + lines[i].Split(';')[1] + ";" + lines[i].Split(';')[2] + ";" + lines[i].Split(';')[3] + ";" + lines[i].Split(';')[4] + ";" + lines[i].Split(';')[5] + ";" + lines[i].Split(';')[6] + ";" + lines[i].Split(';')[7] + ";" + lines[i].Split(';')[8] + ";" + lines[i].Split(';')[9] + ";" + temp + ";" + lines[i].Split(';')[11];
                     lines[i] = line;
                     break;

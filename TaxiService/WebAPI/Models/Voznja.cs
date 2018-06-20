@@ -8,30 +8,31 @@ namespace WebAPI.Models
     public class Voznja
     {
         DateTime datumIVreme;
-        Lokacija lokacija;
-        TipAutomobila tipAuta;
-        Musterija pozivaoc;
+        Lokacija lokacija1;
+        string tipAuta;
+        string pozivaoc;
         Lokacija odrediste;
-        Dispecer kreatorVoznje;
-        Vozac vozacMusterije;
-        int inzos;
+        string kreatorVoznje;
+        string vozacMusterije;
+        int iznos;
         Komentar komentarVoznje;
-        StatusVoznje status;
+        string status;
 
         public Voznja()
         {
-
+            komentarVoznje = new Komentar();
+            odrediste = new Lokacija();
         }
 
         public DateTime DatumIVreme { get => datumIVreme; set => datumIVreme = value; }
-        public Lokacija Lokacija { get => lokacija; set => lokacija = value; }
-        public TipAutomobila TipAuta { get => tipAuta; set => tipAuta = value; }
-        public Musterija Pozivaoc { get => pozivaoc; set => pozivaoc = value; }
+        public Lokacija Lokacija1 { get => lokacija1; set => lokacija1 = value; }
+        public string TipAuta { get => tipAuta; set => tipAuta = value; }
+        public string Pozivaoc { get => pozivaoc; set => pozivaoc = value; }
         public Lokacija Odrediste { get => odrediste; set => odrediste = value; }
-        public Dispecer KreatorVoznje { get => kreatorVoznje; set => kreatorVoznje = value; }
-        public Vozac VozacMusterije { get => vozacMusterije; set => vozacMusterije = value; }
-        public int Inzos { get => inzos; set => inzos = value; }
+        public string KreatorVoznje { get => kreatorVoznje; set => kreatorVoznje = value; }
+        public string VozacMusterije { get => vozacMusterije; set => vozacMusterije = value; }
+        public int Iznos { get => iznos; set => iznos = value; }
         public Komentar KomentarVoznje { get => komentarVoznje; set => komentarVoznje = value; }
-        public StatusVoznje Status { get => status; set => status = value; }
+        public string Status { get => status; set => status = value; }
     }
 }

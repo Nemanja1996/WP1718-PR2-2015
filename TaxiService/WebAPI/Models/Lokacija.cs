@@ -13,8 +13,8 @@ namespace WebAPI.Models
 
         public Lokacija()
         {
-            X = "0";
-            Y = "0";
+            X = "";
+            Y = "";
             Adresa = new Adresa();
         }
 

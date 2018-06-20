@@ -9,14 +9,19 @@ namespace WebAPI.Models
     {
         private string opis;
         private DateTime datumObjave;
-        private Korisnik kreatorKomentara;
-        private Voznja komentarisanaVoznja;
+        private string kreatorKomentara;
         private int ocena;
+
+        public Komentar()
+        {
+            Opis = "";
+            datumObjave = new DateTime();
+            KreatorKomentara = "";
+        }
 
         public string Opis { get => opis; set => opis = value; }
         public DateTime DatumObjave { get => datumObjave; set => datumObjave = value; }
-        public Korisnik KreatorKomentara { get => kreatorKomentara; set => kreatorKomentara = value; }
-        public Voznja KomentarisanaVoznja { get => komentarisanaVoznja; set => komentarisanaVoznja = value; }
+        public string KreatorKomentara { get => kreatorKomentara; set => kreatorKomentara = value; }
         public int Ocena { get => ocena; set => ocena = value; }
     }
 }
