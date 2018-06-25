@@ -108,7 +108,8 @@
                     korisnickoIme: `${$('#korisnickoImeReg').val()}`,
                     lozinka: `${$('#lozinkaReg').val()}`,
                     telefon: `${$('#telefonReg').val()}`,
-                    email: `${$('#mailReg').val()}`
+                    email: `${$('#mailReg').val()}`,
+                    uloga: "Korisnik"
                 }
 
                 $.ajax({
@@ -182,7 +183,7 @@
             <tr>
                 <th>Pol:</th>
                 <td>
-                    <input type="radio" name="pol" value="M" id="Pol1" />M
+                    <input checked="true" type="radio" name="pol" value="M" id="Pol1" />M
                     <input type="radio" name="pol" value="Z" id="Pol2" />Z
                 </td>
             </tr>

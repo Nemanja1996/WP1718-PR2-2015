@@ -7,16 +7,16 @@ namespace WebAPI.Models
 {
     public class Vozac : Korisnik
     {
-        Lokacija lokacija;
+        Lokacija lokacija1;
         Automobil automobil;
 
         public Vozac()
         {
-            Lokacija = new Lokacija();
+            Lokacija1 = new Lokacija();
             Automobil = new Automobil();
         }
 
-        public Lokacija Lokacija { get => lokacija; set => lokacija = value; }
+        public Lokacija Lokacija1 { get => lokacija1; set => lokacija1 = value; }
         public Automobil Automobil { get => automobil; set => automobil = value; }
     }
 }
