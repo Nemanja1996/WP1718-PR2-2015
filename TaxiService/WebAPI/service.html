@@ -267,7 +267,7 @@
 
                 txt += "<tr><th>Ulica:</th><td><input type='text' id='ulicaVoznja'/></td></tr>";
                 txt += "<tr><th>Grad:</th><td><input type='text' id='gradVoznja'/></td></tr>";
-                txt += "<tr><th>Tip automobila:</th><td><select id='tipAutomobila' value='Putnicko vozilo'><option value='Putnicko vozilo'>Putnicko vozilo</option><option value='teretnoVozilo'>Teretno vozilo</option></select></td></tr>"
+                txt += "<tr><th>Tip automobila:</th><td><select id='tipAutomobila' value='Putnicko vozilo'><option value='Putnicko vozilo'>Putnicko vozilo</option><option value='TeretnoVozilo'>Teretno vozilo</option></select></td></tr>"
                 txt += "<tr><td><button type='button' id='rezervisiVoznju' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-floppy-saved' ></span> Dodaj voznju</button ></td></tr>";
 
                 txt += "</table>"
@@ -546,7 +546,7 @@
 
                             txt += "<tr><th>Ulica:</th><td><input type='text' id='ulicaVoznja1' value='"+ulica+"'/></td></tr>";
                             txt += "<tr><th>Grad:</th><td><input type='text' id='gradVoznja1' value='"+grad+"'/></td></tr>";
-                            txt += "<tr><th>Tip automobila:</th><td><select id='tipAutomobila1' value='"+tipAuta+"'><option value='PutnickoVozilo'>PutnickoVozilo</option><option value='TeretnoVozilo'>TeretnoVozilo</option></select></td></tr>"
+                            txt += "<tr><th>Tip automobila:</th><td><select id='tipAutomobila1' value='"+tipAuta+"' disabled><option value='PutnickoVozilo'>PutnickoVozilo</option><option value='TeretnoVozilo'>TeretnoVozilo</option></select></td></tr>"
                             txt += "<tr><th>Vozac:</th><td><select id='vozac1'>"
                             for (var i = 0; i < data.length; i++) {
                                 txt += "<option value='" + data[i] + "'>" + data[i] + "</option>"
@@ -650,21 +650,35 @@
                     success: function (data) {
                         let txt = "";
                         txt += "<div class='absolute'>"
-                        txt += "<table border = '1'>"
-                        txt += "<tr><th>Datum i vreme:</th> <th>Grad(Polazak): </th> <th>Ulica i broj(Polazak):</th> <th>Tip automobila:</th> <th>Grad(Odrediste): </th> <th>Ulica i broj(Odrediste):</th> <th>Kreator voznje:</th> <th>Vozac:</th> <th>Iznos:</th> <th id='komentar'>Komentar:</th> <th>Status voznje:</th><th>Opcija:</th></tr>"
+                        txt += "<table border='2'>"
+                        txt += "<tr><th>Datum i vreme:</th> <th>Grad(Polazak): </th> <th>Ulica i broj(Polazak):</th><th>Pozivaoc voznje:</th> <th>Tip automobila:</th><th>Vozac:</th><th>Opcija:</th></tr>"
                         for (var i = 0; i < data.length; i++) {
-                            if (data[i].Status == "Kreirana") {
-                                txt += "<tr><td>" + data[i].DatumIVreme + "</td> <td>" + data[i].Lokacija1.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Lokacija1.Adresa.UlicaBroj + "</td> <td>" + data[i].TipAuta + "</td> <td>" + data[i].Odrediste.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Odrediste.Adresa.UlicaBroj + "</td> <td>" + data[i].KreatorVoznje + "</td> <td>" + data[i].VozacMusterije + "</td> <td>" + data[i].Iznos + "</td> <td><textarea id='komentarVoznje' rows='1' cols='20' readonly='true'>" + data[i].KomentarVoznje.Opis + "</textarea></td> <td>" + data[i].Status + "</td><td><button type='button' name='" + i + "' id='otkaziVoznju' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-remove' ></span> Otkazi</button ></td></tr>"
-                            }
-                            else {
-                                txt += "<tr><td>" + data[i].DatumIVreme + "</td> <td>" + data[i].Lokacija1.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Lokacija1.Adresa.UlicaBroj + "</td> <td>" + data[i].TipAuta + "</td> <td>" + data[i].Odrediste.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Odrediste.Adresa.UlicaBroj + "</td> <td>" + data[i].KreatorVoznje + "</td> <td>" + data[i].VozacMusterije + "</td> <td>" + data[i].Iznos + "</td> <td><textarea id='komentarVoznje' rows='1' cols='20' readonly='true'>" + data[i].KomentarVoznje.Opis + "</textarea></td> <td>" + data[i].Status + "</td></tr>"
-                            }
+                            txt += "<tr><td>" + data[i].DatumIVreme + "</td> <td>" + data[i].Lokacija1.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Lokacija1.Adresa.UlicaBroj + "</td><td>" + data[i].Pozivaoc + "</td> <td id='tipAutaObrada" + i + "'>" + data[i].TipAuta + "</td> <td><select id='vozacObrada" + i + "'></select></td > <td><button type='button' name='" + i + "' id='obradiVoznju' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-download-alt' ></span> Dobavi vozaca</button ></td></tr > ";
                         }
                         txt += "</table>"
                         txt += "</div>"
                         $(tip).html(txt);
                     }
+                });
+            });
 
+            $("div").on("click", "#obradiVoznju", function () {
+                let index = parseInt($(this).prop("name"));
+                $('#obradiVoznju').prop("id", "obradiVoznju1");
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/Dispecer/' + $('#tipAutaObrada' + index).html(),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (data) {
+                        let tekst;
+                        for (let i = 0; i < data.length; i++) {
+                            tekst = "<option value='"+data[i]+"'>"+data[i]+"</option>";
+                            
+                        }
+                        $('#vozacObrada' + index).html(tekst);
+                    }
                 });
             });
         });
@@ -688,7 +702,6 @@
                 </div>
             </div>
         </nav>
-        <h1>Stranica za musteriju</h1>
         <div id="printMusterijaData">
         </div>
     </div>
@@ -707,7 +720,6 @@
                     </div>
                 </div>
             </nav>
-            <h1>Stranica za dispecera</h1>
             <div id="printDispecerData">
             </div>
         </div>
@@ -724,7 +736,6 @@
                     </div>
                 </div>
             </nav>
-            <h1>Stranica za vozaca</h1>
             <div id="printVozacData">
             </div>
         </div>

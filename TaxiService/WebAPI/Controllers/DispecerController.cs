@@ -98,71 +98,73 @@ namespace WebAPI.Controllers
                 {
                     string voznje = lines[i].Split(';')[9];
                     int duzina = voznje.Length;
-                    string voznje1 = voznje.Substring(1, duzina - 2);
+                    if (duzina > 2) {
+                        string voznje1 = voznje.Substring(1, duzina - 2);
 
-                    string[] voznje2 = voznje1.Split('|');
-                    for (int j = 0; j < voznje2.Count(); j++)
-                    {
-                        int duzina1 = voznje2[j].Length;
-                        string voznje3 = voznje2[j].Substring(1, duzina1 - 2);
-                        if (String.Equals(voznje3.Split(',')[15], "Kreirana")) {
-                            Lokacija lokTemp = new Lokacija();
-                            lokTemp.X = voznje3.Split(',')[1];
-                            lokTemp.Y = voznje3.Split(',')[2];
+                        string[] voznje2 = voznje1.Split('|');
+                        for (int j = 0; j < voznje2.Count(); j++)
+                        {
+                            int duzina1 = voznje2[j].Length;
+                            string voznje3 = voznje2[j].Substring(1, duzina1 - 2);
+                            if (String.Equals(voznje3.Split(',')[15], "Kreirana")) {
+                                Lokacija lokTemp = new Lokacija();
+                                lokTemp.X = voznje3.Split(',')[1];
+                                lokTemp.Y = voznje3.Split(',')[2];
 
-                            Adresa adresaTemp = new Adresa()
-                            {
-                                UlicaBroj = voznje3.Split(',')[3],
-                                NaseljenoMestoBroj = voznje3.Split(',')[4]
-                            };
-                            lokTemp.Adresa = adresaTemp;
+                                Adresa adresaTemp = new Adresa()
+                                {
+                                    UlicaBroj = voznje3.Split(',')[3],
+                                    NaseljenoMestoBroj = voznje3.Split(',')[4]
+                                };
+                                lokTemp.Adresa = adresaTemp;
 
-                            Lokacija lokacija2 = new Lokacija();
-                            lokacija2.X = voznje3.Split(',')[7];
-                            lokacija2.Y = voznje3.Split(',')[8];
-                            Adresa adresaTemp2 = new Adresa()
-                            {
-                                UlicaBroj = voznje3.Split(',')[9],
-                                NaseljenoMestoBroj = voznje3.Split(',')[10]
-                            };
-                            lokacija2.Adresa = adresaTemp2;
-                            Komentar koment = new Komentar();
+                                Lokacija lokacija2 = new Lokacija();
+                                lokacija2.X = voznje3.Split(',')[7];
+                                lokacija2.Y = voznje3.Split(',')[8];
+                                Adresa adresaTemp2 = new Adresa()
+                                {
+                                    UlicaBroj = voznje3.Split(',')[9],
+                                    NaseljenoMestoBroj = voznje3.Split(',')[10]
+                                };
+                                lokacija2.Adresa = adresaTemp2;
+                                Komentar koment = new Komentar();
 
-                            int komentDuzina = voznje3.Split(',')[14].Length;
-                            string komentarString = voznje3.Split(',')[14].Substring(1, komentDuzina - 2);
+                                int komentDuzina = voznje3.Split(',')[14].Length;
+                                string komentarString = voznje3.Split(',')[14].Substring(1, komentDuzina - 2);
 
-                            koment.Opis = ((komentarString).Split('+')[1]);
-                            if (!String.Equals((komentarString).Split('+')[1], ""))
-                            {
-                                koment.DatumObjave = Convert.ToDateTime((komentarString).Split('+')[0]);
+                                koment.Opis = ((komentarString).Split('+')[1]);
+                                if (!String.Equals((komentarString).Split('+')[1], ""))
+                                {
+                                    koment.DatumObjave = Convert.ToDateTime((komentarString).Split('+')[0]);
+                                }
+                                koment.KreatorKomentara = (komentarString).Split('+')[2];
+                                if (!String.Equals((komentarString).Split('+')[3], ""))
+                                {
+                                    koment.Ocena = Int32.Parse(((komentarString).Split('+')[3]));
+                                }
+                                else
+                                {
+                                    koment.Ocena = 0;
+                                }
+
+                                int statusLen = voznje3.Split(',')[15].Length;
+                                string status = (voznje3.Split(',')[15]).Substring(0, statusLen);
+
+                                Voznja voznjaRet = new Voznja()
+                                {
+                                    DatumIVreme = Convert.ToDateTime(voznje3.Split(',')[0]),
+                                    Lokacija1 = lokTemp,
+                                    TipAuta = voznje3.Split(',')[5],
+                                    Pozivaoc = voznje3.Split(',')[6],
+                                    Odrediste = lokacija2,
+                                    KreatorVoznje = voznje3.Split(',')[11],
+                                    VozacMusterije = voznje3.Split(',')[12],
+                                    Iznos = Int32.Parse(voznje3.Split(',')[13]),
+                                    KomentarVoznje = koment,
+                                    Status = status
+                                };
+                                retList.Add(voznjaRet);
                             }
-                            koment.KreatorKomentara = (komentarString).Split('+')[2];
-                            if (!String.Equals((komentarString).Split('+')[3], ""))
-                            {
-                                koment.Ocena = Int32.Parse(((komentarString).Split('+')[3]));
-                            }
-                            else
-                            {
-                                koment.Ocena = 0;
-                            }
-
-                            int statusLen = voznje3.Split(',')[15].Length;
-                            string status = (voznje3.Split(',')[15]).Substring(0, statusLen);
-
-                            Voznja voznjaRet = new Voznja()
-                            {
-                                DatumIVreme = Convert.ToDateTime(voznje3.Split(',')[0]),
-                                Lokacija1 = lokTemp,
-                                TipAuta = voznje3.Split(',')[5],
-                                Pozivaoc = voznje3.Split(',')[6],
-                                Odrediste = lokacija2,
-                                KreatorVoznje = voznje3.Split(',')[11],
-                                VozacMusterije = voznje3.Split(',')[12],
-                                Iznos = Int32.Parse(voznje3.Split(',')[13]),
-                                KomentarVoznje = koment,
-                                Status = status
-                            };
-                            retList.Add(voznjaRet);
                         }
                     }
                 }
