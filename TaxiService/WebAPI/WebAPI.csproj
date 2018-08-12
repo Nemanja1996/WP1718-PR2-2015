@@ -185,6 +185,8 @@
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\MyStyle\RegisterAndLogIn.css" />
+    <Content Include="Content\MyStyle\Service.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
@@ -213,6 +215,11 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\Moje skripte\Dispecer.js" />
+    <Content Include="Scripts\Moje skripte\Musterija.js" />
+    <Content Include="Scripts\Moje skripte\RegisterAndLogIn.js" />
+    <Content Include="Scripts\Moje skripte\Service.js" />
+    <Content Include="Scripts\Moje skripte\Vozac.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="service.html" />

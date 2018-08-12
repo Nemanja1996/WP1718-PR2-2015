@@ -1,7 +1,11 @@
-Nemanja;Vasiljevic;M;2312996790028;nemanja1996;23.12.1996;0641194648;nemanjav1996@hotmail.com;Dispecer;[];[];[]
-Dragana;Kocic;Z;0545778965587;dragica1996;05.10.1996;0645589878;dragica1996@gmail.com;Dispecer;[];[];[]
-Ilija;Grk;M;2345778986657;ilija98;gajdobra98;0641194878;ilija@gmail.com;Korisnik;[{6/20/2018 7:15:41 PM,#,#,Bulevar Oslobodjenja,Novi Sad,PutnickoVozilo,grki98,,,,,,,0,{+++},Kreirana}|{6/19/2018 4:25:59 PM,#,#,Bulevar Oslobodjenja,Novi Sad,PutnickoVozilo,ilija98,,,,,,,0,{6/24/2018 6:41:56 PM+Prelosa usluga+ilija98+0},Kreirana}|{6/18/2018 11:54:13 PM,#,#,Heroja Jerkovica 19,Uzice,PutnickoVozilo,ilija98,,,,,,,0,{6/24/2018 6:31:51 PM+Losa usluga+ilija98+0},Kreirana}|{6/18/2018 8:35:19 PM,#,#,Despota Stefana 7,Novi Sad,PutnickoVozilo,ilija98,,,,,,,0,{6/24/2018 6:50:43 PM+Preprelosa usluga+ilija98+0},Kreirana}];[];[]
-Vladimir;Krivosija;M;8795887456632;cimi94;cimara;0654489878;vlada@gmail.com;Vozac;[];[13,12,Heroja Jerkovica 19,Uzice 31000];[cimi94,2008,NS-201-TX,1,PutnickoVozilo];0
-Smiljana;Voj;M;5478996578895;smilja22;123123;0647789658;sm@gmail.com;Korisnik;[];[];[]
-Maja;Radic;M;0105996754415;maja96;bratunacMilona;412012;maja@gmail.com;Korisnik;[];[];[]
+Nemanja;Vasiljevic;M;2312996790028;nemanja1996;23.12.1996;0641194648;nemanjav1996@hotmail.com;Dispecer;[];[];[];#
+Dragana;Kocic;Z;0545778965587;dragica1996;05.10.1996;0645589878;dragica1996@gmail.com;Dispecer;[];[];[];#
+Ilija;Grk;M;2345778986657;ilija98;gajdobra98;0641194878;ilija@gmail.com;Korisnik;[{6/20/2018 7:15:41 PM,#,#,Bulevar Oslobodjenja,Novi Sad,PutnickoVozilo,grki98,,,,,,,0,{+++},Kreirana}|{6/19/2018 4:25:59 PM,#,#,Bulevar Oslobodjenja,Novi Sad,PutnickoVozilo,ilija98,,,,,,,0,{6/24/2018 6:41:56 PM+Prelosa usluga+ilija98+0},Otkazana}|{6/18/2018 11:54:13 PM,#,#,Heroja Jerkovica 19,Uzice,PutnickoVozilo,ilija98,,,,,,,0,{6/24/2018 6:31:51 PM+Losa usluga+ilija98+0},Otkazana}|{6/18/2018 8:35:19 PM,#,#,Despota Stefana 7,Novi Sad,PutnickoVozilo,ilija98,,,,,,,0,{6/24/2018 6:50:43 PM+Preprelosa usluga+ilija98+0},Otkazana}|];[];[];#
+Vladimir;Krivosija;M;8795887456632;cimi94;cimara;0654489878;vlada@gmail.com;Vozac;[];[13,12,Heroja Jerkovica 25,Uzice 31000];[cimi94,2008,NS-201-TX,1,PutnickoVozilo];0
+Smiljana;Voj;M;5478996578895;smilja22;123123;0647789658;sm@gmail.com;Korisnik;[{8/10/2018 11:33:31 AM,#,#,Petra Drezgica 12A,Novi Sad,TeretnoVozilo,smilja22,,,,,,,0,{8/10/2018 12:27:46 PM+Losa usluga+smilja22+0},Otkazana}|{8/10/2018 10:37:05 AM,#,#,Zeleznicka 14,Novi Sad,TeretnoVozilo,smilja22,,,,,,,0,{8/10/2018 5:03:29 PM+Prelosa usluga+smilja22+0},Otkazana}|];[];[];#
+Maja;Radic;M;0105996754415;maja96;bratunacMilona;412012;maja@gmail.com;Korisnik;[];[];[];#
 Aleksandra;Aleksandra;M;4578996532289;aksi94;babicka;0645587896;aleksandra@gmail.com;Vozac;[{6/25/2018 10:58:52 PM,#,#,Despota Stefana 25A,Novi Sad,TeretnoVozilo,,,,,,nemanja1996,aksi94,0,{+++},Kreirana}|];[0,0,Zeleznicka 15,Novi Sad];[aksi94,2010,NS-458-TX,2,TeretnoVozilo];1
+Valentina;Vasiljevic;M;2907003790026;vanja003;valentina;0641197875;vanja003@gmail.com;Korisnik;[];[];[];#
+Vera;Vasiljevic;M;0452975785546;vera1975;nemanjavanja;0616361114;vera@gmail.com;Korisnik;[];[];[];#
+Aleksa;Aleksa;M;0310997895568;sreda97;sredic;0647789565;aleksa@gmail.com;Vozac;[];[15,15,Heroja Jerkovica 3,Uzice];[sreda97,2015,UE-45-TX,45,teretnoVozilo];0
+Zorica;Vasiljević;M;2598778956632;zoka;vasiljevic;0647789654;zorica@gmail.com;Korisnik;[{8/12/2018 3:35:27 PM,#,#,Dimitrija Tucovica 18,Uzice,Putnicko vozilo,zoka,,,,,,,0,{8/12/2018 3:36:23 PM+Losa usluga+zoka+0},Otkazana}|];[];[];#

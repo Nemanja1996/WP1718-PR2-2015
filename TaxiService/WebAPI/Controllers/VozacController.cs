@@ -48,13 +48,22 @@ namespace WebAPI.Controllers
                 if (String.Equals(lines[i].Split(';')[4], id))
                 {
                     string temp = "[" + lokacija.X + "," + lokacija.Y + "," + lokacija.Adresa.UlicaBroj + "," + lokacija.Adresa.NaseljenoMestoBroj + "]";
-                    string line = lines[i].Split(';')[0] + ";" + lines[i].Split(';')[1] + ";" + lines[i].Split(';')[2] + ";" + lines[i].Split(';')[3] + ";" + lines[i].Split(';')[4] + ";" + lines[i].Split(';')[5] + ";" + lines[i].Split(';')[6] + ";" + lines[i].Split(';')[7] + ";" + lines[i].Split(';')[8] + ";" + lines[i].Split(';')[9] + ";" + temp + ";" + lines[i].Split(';')[11];
+                    string line = lines[i].Split(';')[0] + ";" + lines[i].Split(';')[1] + ";" + lines[i].Split(';')[2] + ";" + lines[i].Split(';')[3] + ";" + lines[i].Split(';')[4] + ";" + lines[i].Split(';')[5] + ";" + lines[i].Split(';')[6] + ";" + lines[i].Split(';')[7] + ";" + lines[i].Split(';')[8] + ";" + lines[i].Split(';')[9] + ";" + temp + ";" + lines[i].Split(';')[11]+";"+ lines[i].Split(';')[12];
                     lines[i] = line;
                     break;
                 }
             }
 
-            System.IO.File.WriteAllLines(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"), lines);
+            string text = "";
+            for (int k = 0; k < lines.Length; k++)
+            {
+                text += lines[k];
+                if (k != lines.Length - 1)
+                {
+                    text += "\n";
+                }
+            }
+            System.IO.File.WriteAllText(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"), text);
             return true;
         }
     }

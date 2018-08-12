@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
                 }
             }
 
-            string korisnikUpis = "\n" + vozac.Ime + ";" + vozac.Prezime + ";" + vozac.Pol.ToString() + ";" + vozac.Jmbg + ";" + vozac.KorisnickoIme + ";" + vozac.Lozinka + ";" + vozac.Telefon + ";" + vozac.Email + ";" + vozac.Uloga + ";[];["+ vozac.Lokacija1.X + "," + vozac.Lokacija1.Y + "," + vozac.Lokacija1.Adresa.UlicaBroj + "," + vozac.Lokacija1.Adresa.NaseljenoMestoBroj+"];["+vozac.Automobil.VozacAutomobila+ "," + vozac.Automobil.Godiste + "," + vozac.Automobil.Registracija + "," + vozac.Automobil.BrojTaksiVozila + "," + vozac.Automobil.Tip +"]";
+            string korisnikUpis = "\n" + vozac.Ime + ";" + vozac.Prezime + ";" + vozac.Pol.ToString() + ";" + vozac.Jmbg + ";" + vozac.KorisnickoIme + ";" + vozac.Lozinka + ";" + vozac.Telefon + ";" + vozac.Email + ";" + vozac.Uloga + ";[];["+ vozac.Lokacija1.X + "," + vozac.Lokacija1.Y + "," + vozac.Lokacija1.Adresa.UlicaBroj + "," + vozac.Lokacija1.Adresa.NaseljenoMestoBroj+"];["+vozac.Automobil.VozacAutomobila+ "," + vozac.Automobil.Godiste + "," + vozac.Automobil.Registracija + "," + vozac.Automobil.BrojTaksiVozila + "," + vozac.Automobil.Tip +"];0";
             System.IO.File.AppendAllText(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"), korisnikUpis);
 
             return true;
@@ -55,7 +55,16 @@ namespace WebAPI.Controllers
                 }
             }
 
-            System.IO.File.WriteAllLines(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"), lines);
+            string text = "";
+            for (int k = 0; k < lines.Length; k++)
+            {
+                text += lines[k];
+                if (k != lines.Length - 1)
+                {
+                    text += "\n";
+                }
+            }
+            System.IO.File.WriteAllText(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"), text);
 
             return true;
         }
@@ -99,7 +108,7 @@ namespace WebAPI.Controllers
                     string voznje = lines[i].Split(';')[9];
                     int duzina = voznje.Length;
                     if (duzina > 2) {
-                        string voznje1 = voznje.Substring(1, duzina - 2);
+                        string voznje1 = voznje.Substring(1, duzina - 3);
 
                         string[] voznje2 = voznje1.Split('|');
                         for (int j = 0; j < voznje2.Count(); j++)

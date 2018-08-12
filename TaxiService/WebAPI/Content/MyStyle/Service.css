@@ -1,0 +1,46 @@
+﻿html, body {
+    /* The image used */
+    background-image: url("taxi.jpg");
+    /* Full height */
+    height: 100%;
+    /*Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.absolute {
+    background-color: #ffff66;
+    opacity: 0.8;
+    border-radius: 6px;
+}
+
+
+input[type=text], input[type=password], input[type=tel], input[type=email], select {
+    width: 90%;
+    height: 25px;
+    padding: 12px 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+div.absolute {
+    position: absolute;
+    top: 80px;
+    right: 80px;
+    border: 3px solid #ffff66;
+}
+
+td, th {
+    height: 50px;
+}

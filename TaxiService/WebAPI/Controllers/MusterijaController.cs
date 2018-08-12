@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
             string[] lines = System.IO.File.ReadAllLines(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"));
             string korisnik = id.Split('|')[1];
             string idVoznje = id.Split('|')[0];
-            string temp = "{" + voznja.DatumIVreme + "," + voznja.Lokacija1.X + "," + voznja.Lokacija1.Y + "," + voznja.Lokacija1.Adresa.UlicaBroj + "," + voznja.Lokacija1.Adresa.NaseljenoMestoBroj + "," + voznja.TipAuta + "," + voznja.Pozivaoc + "," + voznja.Odrediste.X + "," + voznja.Odrediste.Y + "," + voznja.Odrediste.Adresa.UlicaBroj + "," + voznja.Odrediste.Adresa.NaseljenoMestoBroj + "," + voznja.KreatorVoznje + "," + voznja.VozacMusterije + "," + voznja.Iznos.ToString() + "," + "{"+ DateTime.Now.ToString() +"+"+ voznja.KomentarVoznje.Opis +"+"+ voznja.KomentarVoznje.KreatorKomentara +"+"+ voznja.KomentarVoznje.Ocena +"}" + "," + voznja.Status + "}";
+            string temp = "{" + voznja.DatumIVreme + "," + voznja.Lokacija1.X + "," + voznja.Lokacija1.Y + "," + voznja.Lokacija1.Adresa.UlicaBroj + "," + voznja.Lokacija1.Adresa.NaseljenoMestoBroj + "," + voznja.TipAuta + "," + voznja.Pozivaoc + "," + voznja.Odrediste.X + "," + voznja.Odrediste.Y + "," + voznja.Odrediste.Adresa.UlicaBroj + "," + voznja.Odrediste.Adresa.NaseljenoMestoBroj + "," + voznja.KreatorVoznje + "," + voznja.VozacMusterije + "," + voznja.Iznos.ToString() + "," + "{"+ DateTime.Now.ToString() +"+"+ voznja.KomentarVoznje.Opis +"+"+ voznja.KomentarVoznje.KreatorKomentara +"+"+ voznja.KomentarVoznje.Ocena +"}" + "," + "Otkazana" + "}";
 
             for (int i = 0; i<lines.Length; i++)
             {
@@ -49,7 +49,16 @@ namespace WebAPI.Controllers
                     lines[i] = line1;
                 }
             }
-            System.IO.File.WriteAllLines(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"), lines);
+            string text = "";
+            for (int k = 0; k < lines.Length; k++)
+            {
+                text += lines[k];
+                if (k != lines.Length - 1)
+                {
+                    text += "\n";
+                }
+            }
+            System.IO.File.WriteAllText(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"), text);
             return true;
         }
 
@@ -71,8 +80,16 @@ namespace WebAPI.Controllers
                     break;
                 }
             }
-
-            System.IO.File.WriteAllLines(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"), lines);
+            string text = "";
+            for (int k = 0; k < lines.Length; k++)
+            {
+                text += lines[k];
+                if (k != lines.Length - 1)
+                {
+                    text += "\n";
+                }
+            }
+            System.IO.File.WriteAllText(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"), text);
 
             return true;
         }
@@ -90,7 +107,11 @@ namespace WebAPI.Controllers
                 {
                     string voznje = lines[i].Split(';')[9];
                     int duzina = voznje.Length;
-                    string voznje1 = voznje.Substring(1, duzina - 2);
+                    if (duzina == 2)
+                    {
+                        return retLista;
+                    }
+                    string voznje1 = voznje.Substring(1, duzina - 3);
 
                     string[] voznje2 = voznje1.Split('|');
                     for (int j = 0; j < voznje2.Count(); j++)
