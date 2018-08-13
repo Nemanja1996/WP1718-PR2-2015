@@ -1,6 +1,6 @@
 ﻿html, body {
     /* The image used */
-    background-image: url("taxi.jpg");
+    background-image: url("/../../taxi.jpg");
     /* Full height */
     height: 100%;
     /*Center and scale the image nicely */
@@ -43,4 +43,8 @@ div.absolute {
 
 td, th {
     height: 50px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
 }

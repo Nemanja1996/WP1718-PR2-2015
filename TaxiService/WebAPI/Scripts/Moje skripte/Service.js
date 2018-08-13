@@ -1,6 +1,8 @@
 ﻿$(document).ready(function () {
     var tip = "";
     var voznje;
+    var index1;
+    var voznja1;
     if (localStorage.Ulogovan != "null") {
         if (JSON.parse(localStorage.Ulogovan).Uloga == "Dispecer") {
             $("#musterija").hide();
@@ -93,9 +95,9 @@
 
     $("div").on("click", "#posaljiPromene", function () {
         let pol1;
-        if ($('#Pol1').prop('checked', true)) {
+        if ($('#Pol1').prop('checked')) {
             pol1 = 'M';
-        } else if ($('#Pol2').prop('checked', true)) {
+        } else if ($('#Pol2').prop('checked')) {
             pol1 = 'Z';
         }
 
@@ -361,7 +363,7 @@
             VozacMusterije: voznja.VozacMusterije,
             Iznos: voznja.Iznos,
             KomentarVoznje: komentar,
-            Status: voznja.Status
+            Status: "Otkazana"
         }
 
 
@@ -412,9 +414,9 @@
 
     $("div").on("click", "#addDriverButton", function () {
         let pol1;
-        if ($('#Pol1Vozac').prop('checked', true)) {
+        if ($('#Pol1Vozac').prop('checked')) {
             pol1 = 'M';
-        } else if ($('#Pol2Vozac').prop('checked', true)) {
+        } else if ($('#Pol2Vozac').prop('checked')) {
             pol1 = 'Z';
         }
 
@@ -597,7 +599,7 @@
                 txt += "<table border='2'>"
                 txt += "<tr><th>Datum i vreme:</th> <th>Grad(Polazak): </th> <th>Ulica i broj(Polazak):</th><th>Pozivaoc voznje:</th> <th>Tip automobila:</th><th>Vozac:</th><th>Opcija:</th></tr>"
                 for (var i = 0; i < data.length; i++) {
-                    txt += "<tr><td>" + data[i].DatumIVreme + "</td> <td>" + data[i].Lokacija1.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Lokacija1.Adresa.UlicaBroj + "</td><td>" + data[i].Pozivaoc + "</td> <td id='tipAutaObrada" + i + "'>" + data[i].TipAuta + "</td> <td><select id='vozacObrada" + i + "'></select></td > <td><button type='button' name='" + i + "' id='obradiVoznju' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-download-alt' ></span> Dobavi vozaca</button ></td></tr > ";
+                    txt += "<tr><td>" + data[i].DatumIVreme + "</td> <td>" + data[i].Lokacija1.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Lokacija1.Adresa.UlicaBroj + "</td><td>" + data[i].Pozivaoc + "</td> <td id='tipAutaObrada" + i + "'>" + data[i].TipAuta + "</td> <td><select id='vozacObrada" + i + "'></select></td > <td><button type='button' name='" + i + "' id='obradiVoznju' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-download-alt' ></span> Obradi voznju</button ></td></tr > ";
                 }
                 txt += "</table>"
                 txt += "</div>"
@@ -616,13 +618,189 @@
             contentType: 'application/json;charset=utf-8',
             dataType: 'json',
             success: function (data) {
-                let tekst;
-                for (let i = 0; i < data.length; i++) {
-                    tekst = "<option value='" + data[i] + "'>" + data[i] + "</option>";
+                if (data.length > 0) {
+                    let tekst;
+                    for (let i = 0; i < data.length; i++) {
+                        tekst = "<option value='" + data[i] + "'>" + data[i] + "</option>";
 
+                    }
+                    $('#vozacObrada' + index).html(tekst);
                 }
-                $('#vozacObrada' + index).html(tekst);
+                else {
+                    alert("Nema slobodnih vozaca!");
+                }
             }
+        });
+    });
+
+    $("div").on("click", "#listaVoznjiVozac", function () {
+
+        $.ajax({
+            type: 'GET',
+            url: 'api/Musterija/' + JSON.parse(localStorage.Ulogovan).KorisnickoIme,
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                let txt = "";
+                voznje = data;
+                if (data.length == 0) {
+                    alert("Lista voznji je prazna, ne postoji nijedna voznja!");
+                }
+                else {
+                    txt += "<div class='absolute'>"
+                    txt += "<table border = '1'>"
+                    txt += "<tr><th>Datum i vreme:</th> <th>Grad(Polazak): </th> <th>Ulica i broj(Polazak):</th> <th>Tip automobila:</th> <th>Grad(Odrediste): </th> <th>Ulica i broj(Odrediste):</th> <th>Kreator voznje:</th> <th>Vozac:</th> <th>Iznos:</th> <th id='komentar'>Komentar:</th> <th>Status voznje:</th><th>Opcija:</th></tr>"
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Status == "Kreirana") {
+                            txt += "<tr><td>" + data[i].DatumIVreme + "</td> <td>" + data[i].Lokacija1.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Lokacija1.Adresa.UlicaBroj + "</td> <td>" + data[i].TipAuta + "</td> <td>" + data[i].Odrediste.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Odrediste.Adresa.UlicaBroj + "</td> <td>" + data[i].KreatorVoznje + "</td> <td>" + data[i].VozacMusterije + "</td> <td>" + data[i].Iznos + "</td> <td><textarea id='komentarVoznje' rows='1' cols='20'>" + data[i].KomentarVoznje.Opis + "</textarea></td> <td>" + data[i].Status + "</td><td><button type='button' name='" + i + "' id='uspesnaVoznja' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-ok' ></span>Uspesna</button ><button type='button' name='" + i + "' id='neuspesnaVoznja' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-remove' ></span> Neuspesna</button ></td></tr>"
+                        }
+                        else {
+                            txt += "<tr><td>" + data[i].DatumIVreme + "</td> <td>" + data[i].Lokacija1.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Lokacija1.Adresa.UlicaBroj + "</td> <td>" + data[i].TipAuta + "</td> <td>" + data[i].Odrediste.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Odrediste.Adresa.UlicaBroj + "</td> <td>" + data[i].KreatorVoznje + "</td> <td>" + data[i].VozacMusterije + "</td> <td>" + data[i].Iznos + "</td> <td><textarea id='komentarVoznje' rows='1' cols='20'>" + data[i].KomentarVoznje.Opis + "</textarea></td> <td>" + data[i].Status + "</td><td>/</td><tr>"
+                        }
+                    }
+                    txt += "</table>"
+                    txt += "</div>"
+                    $(tip).html(txt);
+                }
+            }
+
+        });
+    });
+
+    $("div").on("click", "#uspesnaVoznja", function () {
+        let index = parseInt($(this).prop("name"));
+        voznja1 = voznje[index];
+        index1 = index;
+
+        let txt = "";
+        txt += "<div class='absolute'>"
+        txt += "<table>"
+        txt += "<tr><th colspan='2'>Trenutna lokacija</th></tr>";
+
+        txt += "<tr><th>Koordinate:</th><td><input type='text' id='xKord' /></td><td><input type='text' id='yKord'/></td></tr>";
+        txt += "<tr><th>Ulica:</th><td><input type='text' id='ulicaOdrediste'/></td></tr>";
+        txt += "<tr><th>Grad:</th><td><input type='text' id='gradOdrediste'/></td></tr>";
+        txt += "<tr><th>Komentar:</th><td> <textarea id='komentarUspesna' rows='10' cols='20'></textarea></td></tr>"
+        txt += "<tr><th>Cena:</th><td><input type='text' id='cenaUspesna'/></td></tr>";
+        txt += "<tr><th>Ocena:</th><td><select id='ocenaUspesna'><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select></td></tr>"
+
+        txt += "<tr><td><button type='button' id='sacuvajUspesna' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-floppy-saved' ></span> Sacuvaj</button ></td></tr>"
+        txt += "</table>"
+        txt += "</div>"
+        $(tip).html(txt);
+    });
+
+    $("div").on("click", "#neuspesnaVoznja", function () {
+        let index = parseInt($(this).prop("name"));
+        voznja1 = voznje[index];
+        index1 = index;
+        let txt = "";
+        txt += "<div class='absolute'>"
+        txt += "<table>"
+        txt += "<tr><th>Uneti komentar</th></tr>"
+        txt += "<tr><td> <textarea id='komentarVoznjeNeuspesna' rows='15' cols='75'></textarea></td></tr>"
+        txt += "<tr><td><button type='button' id='sacuvajKomentarNeuspesna' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-floppy-saved' ></span> Sacuvaj</button ></td></tr>"
+        txt += "</table>";
+        txt += "</div>"
+        $(tip).html(txt);
+    });
+
+    $("div").on("click", "#sacuvajUspesna", function () {
+
+        let voznja = voznja1;
+
+        let komentar = {
+            Opis: $("#komentarUspesna").val(),
+            DatumObjave: "",
+            KreatorKomentara: (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+            Ocena: $("#ocenaUspesna").val()
+        }
+
+        let adresa1 = {
+            NaseljenoMestoBroj: $("#gradOdrediste").val(),
+            UlicaBroj: $("#ulicaOdrediste").val()
+        }
+
+        let Lokacija2 = {
+            Adresa: adresa1,
+            X: $("#xKord").val(),
+            Y: $("#yKord").val()
+        }
+
+        let Voznja = {
+            DatumIVreme: voznja.DatumIVreme,
+            Lokacija1: voznja.Lokacija1,
+            TipAuta: voznja.TipAuta,
+            Pozivaoc: (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+            Odrediste: Lokacija2,
+            KreatorVoznje: voznja.KreatorVoznje,
+            VozacMusterije: voznja.VozacMusterije,
+            Iznos: $("#cenaUspesna").val(),
+            KomentarVoznje: komentar,
+            Status: "Uspesna"
+        }
+
+        $.ajax({
+            type: 'PUT',
+            url: 'api/Musterija/' + index1 + "|" + (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+            data: JSON.stringify(Voznja),
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                if (data == true) {
+                    alert("Voznja zakljucena (uspesna)!");
+                }
+            }
+        });
+    });
+
+    $("div").on("click", "#sacuvajKomentarNeuspesna", function () {
+
+        let voznja = voznja1;
+
+        let komentar = {
+            Opis: $("#komentarVoznjeNeuspesna").val(),
+            DatumObjave: "",
+            KreatorKomentara: (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+            Ocena: "0"
+        }
+
+        let adresa1 = {
+            NaseljenoMestoBroj: "",
+            UlicaBroj: ""
+        }
+
+        let Lokacija2 = {
+            Adresa: adresa1,
+            X: "",
+            Y: ""
+        }
+
+        let Voznja = {
+            DatumIVreme: voznja.DatumIVreme,
+            Lokacija1: voznja.Lokacija1,
+            TipAuta: voznja.TipAuta,
+            Pozivaoc: (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+            Odrediste: Lokacija2,
+            KreatorVoznje: voznja.KreatorVoznje,
+            VozacMusterije: voznja.VozacMusterije,
+            Iznos: voznja.Iznos,
+            KomentarVoznje: komentar,
+            Status: "Neuspesna"
+        }
+
+        $.ajax({
+            type: 'PUT',
+            url: 'api/Musterija/' + index1 + "|" + (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+            data: JSON.stringify(Voznja),
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                if (data == true) {
+                    alert("Voznja zakljucena (neuspesno)!");
+                }
+            }
+
         });
     });
 });

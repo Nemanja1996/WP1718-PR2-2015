@@ -38,9 +38,9 @@
 
     $("#registracija").click(function () {
         let pol1;
-        if ($('#Pol1').prop('checked', true)) {
+        if ($('#Pol1').prop('checked')) {
             pol1 = 'M';
-        } else if ($('#Pol2').prop('checked', true)) {
+        } else if ($('#Pol2').prop('checked')) {
             pol1 = 'Z';
         }
 

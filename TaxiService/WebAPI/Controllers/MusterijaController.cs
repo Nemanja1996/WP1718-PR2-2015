@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
             string[] lines = System.IO.File.ReadAllLines(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/UserDataBase.txt"));
             string korisnik = id.Split('|')[1];
             string idVoznje = id.Split('|')[0];
-            string temp = "{" + voznja.DatumIVreme + "," + voznja.Lokacija1.X + "," + voznja.Lokacija1.Y + "," + voznja.Lokacija1.Adresa.UlicaBroj + "," + voznja.Lokacija1.Adresa.NaseljenoMestoBroj + "," + voznja.TipAuta + "," + voznja.Pozivaoc + "," + voznja.Odrediste.X + "," + voznja.Odrediste.Y + "," + voznja.Odrediste.Adresa.UlicaBroj + "," + voznja.Odrediste.Adresa.NaseljenoMestoBroj + "," + voznja.KreatorVoznje + "," + voznja.VozacMusterije + "," + voznja.Iznos.ToString() + "," + "{"+ DateTime.Now.ToString() +"+"+ voznja.KomentarVoznje.Opis +"+"+ voznja.KomentarVoznje.KreatorKomentara +"+"+ voznja.KomentarVoznje.Ocena +"}" + "," + "Otkazana" + "}";
+            string temp = "{" + voznja.DatumIVreme + "," + voznja.Lokacija1.X + "," + voznja.Lokacija1.Y + "," + voznja.Lokacija1.Adresa.UlicaBroj + "," + voznja.Lokacija1.Adresa.NaseljenoMestoBroj + "," + voznja.TipAuta + "," + voznja.Pozivaoc + "," + voznja.Odrediste.X + "," + voznja.Odrediste.Y + "," + voznja.Odrediste.Adresa.UlicaBroj + "," + voznja.Odrediste.Adresa.NaseljenoMestoBroj + "," + voznja.KreatorVoznje + "," + voznja.VozacMusterije + "," + voznja.Iznos.ToString() + "," + "{"+ DateTime.Now.ToString() +"+"+ voznja.KomentarVoznje.Opis +"+"+ voznja.KomentarVoznje.KreatorKomentara +"+"+ voznja.KomentarVoznje.Ocena +"}" + "," + voznja.Status + "}";
 
             for (int i = 0; i<lines.Length; i++)
             {
@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
                 {
                     string line = lines[i];
                     int duzina = line.Split(';')[9].Length;
-                    string voznje = line.Split(';')[9].Substring(1, duzina - 2);
+                    string voznje = line.Split(';')[9].Substring(1, duzina - 3);
 
                     string[] voznje1 = voznje.Split('|');
 
@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
                         voznjeUpis += voznje1[j] + "|";
                     }
                     int duzinaUpis = voznjeUpis.Length;
-                    voznjeUpis = voznjeUpis.Substring(0, duzinaUpis-1);
+                    //voznjeUpis = voznjeUpis.Substring(0, duzinaUpis-1);
                     voznjeUpis += "]";
 
                     int index = line.IndexOf('[');
@@ -46,6 +46,28 @@ namespace WebAPI.Controllers
                     int duzina1 = line.Length - index1 - 1;
 
                     string line1 = line.Substring(0, index) + voznjeUpis + line.Substring(index1 + 1, duzina1);
+                    int line1Duzina = line1.Length;
+
+                    bool slobodan = true;
+
+                    for (int k = 0; k < voznje1.Length; k++)
+                    {
+                        if (String.Equals(voznje1[k].Split(',')[15], "Kreirana"))
+                        {
+                            slobodan = false;
+                        }
+                    }
+
+                    if (String.Equals(line1.Split(';')[8], "Vozac"))
+                    {
+                        if (slobodan) {
+                            line1 = line1.Substring(0, line1Duzina - 1) + "0";
+                        }
+                        else
+                        {
+                            line1 = line1.Substring(0, line1Duzina - 1) + "1";
+                        }
+                    }
                     lines[i] = line1;
                 }
             }

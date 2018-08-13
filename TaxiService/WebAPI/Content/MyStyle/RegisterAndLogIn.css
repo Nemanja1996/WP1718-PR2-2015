@@ -1,6 +1,14 @@
 ﻿body, html {
     height: 100%;
     margin: 0;
+    /* The image used */
+    background-image: url("/../../taxi.jpg");
+    /* Full height */
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .absolute {
@@ -21,14 +29,7 @@ input[type=text], input[type=password], input[type=tel], input[type=email], sele
 }
 
 .bg {
-    /* The image used */
-    background-image: url("taxi.jpg");
-    /* Full height */
-    height: 100%;
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+
 }
 
 div.absolute {
