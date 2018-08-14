@@ -46,6 +46,7 @@ namespace WebAPI.Controllers
                         int duzina = line2.Length;
                         line2 = line2.Substring(0, duzina - 1) + "1";
                         lines[i] = line2;
+
                         break;
                     }
                     else
@@ -115,7 +116,8 @@ namespace WebAPI.Controllers
                         {
                             int duzina1 = voznje2[j].Length;
                             string voznje3 = voznje2[j].Substring(1, duzina1 - 2);
-                            if (String.Equals(voznje3.Split(',')[15], "Kreirana")) {
+
+                            if (String.Equals(voznje3.Split(',')[15], "KreiranaNaCekanju")) {
                                 Lokacija lokTemp = new Lokacija();
                                 lokTemp.X = voznje3.Split(',')[1];
                                 lokTemp.Y = voznje3.Split(',')[2];
@@ -173,6 +175,8 @@ namespace WebAPI.Controllers
                                     Status = status
                                 };
                                 retList.Add(voznjaRet);
+
+
                             }
                         }
                     }

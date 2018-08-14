@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
             {
                 if (String.Equals(lines[i].Split(';')[4], id))
                 {
-                    string korisnikUpis = korisnik2.Ime + ";" + korisnik2.Prezime + ";" + korisnik2.Pol.ToString() + ";" + korisnik2.Jmbg + ";" + korisnik2.KorisnickoIme + ";" + korisnik2.Lozinka + ";" + korisnik2.Telefon + ";" + korisnik2.Email + ";" + lines[i].Split(';')[8] + ";" + lines[i].Split(';')[9] + ";" + lines[i].Split(';')[10] + ";" + lines[i].Split(';')[11] + ";" + lines[i].Split(';')[12] + ";#" ;
+                    string korisnikUpis = korisnik2.Ime + ";" + korisnik2.Prezime + ";" + korisnik2.Pol.ToString() + ";" + korisnik2.Jmbg + ";" + korisnik2.KorisnickoIme + ";" + korisnik2.Lozinka + ";" + korisnik2.Telefon + ";" + korisnik2.Email + ";" + lines[i].Split(';')[8] + ";" + lines[i].Split(';')[9] + ";" + lines[i].Split(';')[10] + ";" + lines[i].Split(';')[11] + ";" + lines[i].Split(';')[12] ;
                     for (int j = i + 1; j < lines.Length; j++)
                     {
                         string item = lines[j];
