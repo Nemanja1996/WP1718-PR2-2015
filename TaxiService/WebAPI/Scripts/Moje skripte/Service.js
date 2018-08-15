@@ -209,7 +209,7 @@
 
         txt += "<tr><th>Ulica:</th><td><input type='text' id='ulicaVoznja'/></td></tr>";
         txt += "<tr><th>Grad:</th><td><input type='text' id='gradVoznja'/></td></tr>";
-        txt += "<tr><th>Tip automobila:</th><td><select id='tipAutomobila' value='PutnickoVozilo'><option value='Putnicko vozilo'>Putnicko vozilo</option><option value='TeretnoVozilo'>Teretno vozilo</option></select></td></tr>"
+        txt += "<tr><th>Tip automobila:</th><td><select id='tipAutomobila' value='PutnickoVozilo'><option value='PutnickoVozilo'>Putnicko vozilo</option><option value='TeretnoVozilo'>Teretno vozilo</option></select></td></tr>"
         txt += "<tr><td><button type='button' id='rezervisiVoznju' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-floppy-saved' ></span> Dodaj voznju</button ></td></tr>";
 
         txt += "</table>"
@@ -444,7 +444,7 @@
         txt += "<tr><th>Registracija:</th><td><input type='text' id='registracijaVozac'/></td></tr>";
         txt += "<tr><th>Broj vozila:</th><td><input type='text' id='brojVozilaVozac'/></td></tr>";
         txt += "<tr><th>Godiste:</th><td><input type='text' id='godisteAutaVozac'/></td></tr>";
-        txt += "<tr><th>Tip automobila:</th><td><select id='tipAutomobilaVozac' value='PutnickoVozilo'><option value='Putnicko vozilo'>Putnicko vozilo</option><option value='teretnoVozilo'>TeretnoVozilo</option></select></td></tr>";
+        txt += "<tr><th>Tip automobila:</th><td><select id='tipAutomobilaVozac' value='PutnickoVozilo'><option value='PutnickoVozilo'>Putnicko vozilo</option><option value='TeretnoVozilo'>Teretno vozilo</option></select></td></tr>";
 
 
         txt += "<tr><td><button type='button' id='addDriverButton' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' ></span> Dodaj vozaca</button ></td></tr>";
@@ -606,7 +606,7 @@
             VozacMusterije: $("#vozac1").val(),
             Iznos: "",
             Komentar: "",
-            Status: "Kreirana"
+            Status: "Formirana"
         }
 
 
@@ -628,7 +628,6 @@
 
 
     $("div").on("click", "#listaVoznjiDispecer", function () {
-
         $.ajax({
             type: 'GET',
             url: 'api/Dispecer',
@@ -688,7 +687,7 @@
 
     $("div").on("click", "#obradaVoznjeGotova", function () {
         let Voznja = voznje[index1];
-        Voznja.Status = "Kreirana"
+        Voznja.Status = "Obradjena"
 
         $.ajax({
             type: 'PUT',
@@ -739,7 +738,7 @@
                     txt += "<table border = '1'>"
                     txt += "<tr><th>Datum i vreme:</th> <th>Grad(Polazak): </th> <th>Ulica i broj(Polazak):</th> <th>Tip automobila:</th> <th>Grad(Odrediste): </th> <th>Ulica i broj(Odrediste):</th> <th>Kreator voznje:</th> <th>Vozac:</th> <th>Iznos:</th> <th id='komentar'>Komentar:</th> <th>Status voznje:</th><th>Opcija:</th></tr>"
                     for (var i = 0; i < data.length; i++) {
-                        if (data[i].Status == "Kreirana") {
+                        if (data[i].Status == "Formirana" || data[i].Status == "Obradjena" || data[i].Status == "Prihvacena") {
                             txt += "<tr><td>" + data[i].DatumIVreme + "</td> <td>" + data[i].Lokacija1.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Lokacija1.Adresa.UlicaBroj + "</td> <td>" + data[i].TipAuta + "</td> <td>" + data[i].Odrediste.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Odrediste.Adresa.UlicaBroj + "</td> <td>" + data[i].KreatorVoznje + "</td> <td>" + data[i].VozacMusterije + "</td> <td>" + data[i].Iznos + "</td> <td><textarea id='komentarVoznje' rows='1' cols='20'>" + data[i].KomentarVoznje.Opis + "</textarea></td> <td>" + data[i].Status + "</td><td><button type='button' name='" + i + "' id='uspesnaVoznja' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-ok' ></span>Uspesna</button ><button type='button' name='" + i + "' id='neuspesnaVoznja' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-remove' ></span> Neuspesna</button ></td></tr>"
                         }
                         else {
@@ -753,6 +752,65 @@
             }
 
         });
+    });
+
+    $("div").on("click", "#listaZaObradu", function () {
+
+        $.ajax({
+            type: 'GET',
+            url: 'api/Dispecer',
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                voznje = data;
+                let txt = "";
+                txt += "<div class='absolute'>"
+                txt += "<table border='2'>"
+                txt += "<tr><th>Datum i vreme:</th> <th>Grad(Polazak): </th> <th>Ulica i broj(Polazak):</th><th>Pozivaoc voznje:</th> <th>Tip automobila:</th><th>Opcija:</th></tr>"
+                for (var i = 0; i < data.length; i++) {
+                    txt += "<tr><td>" + data[i].DatumIVreme + "</td> <td>" + data[i].Lokacija1.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Lokacija1.Adresa.UlicaBroj + "</td><td>" + data[i].Pozivaoc + "</td> <td id='tipAutaObrada" + i + "'>" + data[i].TipAuta + "</td> <td><button type='button' name='" + i + "' id='prihvatiVoznju' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-ok' ></span> Prihvati voznju</button ></td></tr > ";
+                }
+                txt += "</table>"
+                txt += "</div>"
+                $(tip).html(txt);
+            }
+        });
+    });
+
+    $("div").on("click", "#prihvatiVoznju", function () {
+        let index = parseInt($(this).prop("name"));
+        voznja1 = voznje[index];
+
+        let Voznja = voznja1;
+        Voznja.Status = "Prihvacena"
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/Dispecer/' + (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+            data: JSON.stringify(Voznja),
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                if (!data) {
+                    alert("Greska pri kreiranju voznje");
+                } else {
+                    alert("Uspesno ste Kreirali voznju");
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'PUT',
+            url: 'api/Musterija/' + "0" + "|" + Voznja.Pozivaoc,
+            data: JSON.stringify(Voznja),
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                if (data == true) {
+                    alert("Voznja zakljucena (uspesna)!");
+                }
+            }
+        })
     });
 
     $("div").on("click", "#uspesnaVoznja", function () {
@@ -819,7 +877,7 @@
             DatumIVreme: voznja.DatumIVreme,
             Lokacija1: voznja.Lokacija1,
             TipAuta: voznja.TipAuta,
-            Pozivaoc: (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+            Pozivaoc: voznja.Pozivaoc,
             Odrediste: Lokacija2,
             KreatorVoznje: voznja.KreatorVoznje,
             VozacMusterije: voznja.VozacMusterije,
@@ -840,6 +898,21 @@
                 }
             }
         });
+
+        if (Voznja.Pozivaoc != "") {
+            $.ajax({
+                type: 'PUT',
+                url: 'api/Musterija/' + 0 + "|" + Voznja.Pozivaoc,
+                data: JSON.stringify(Voznja),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        alert("Voznja zakljucena (uspesna)!");
+                    }
+                }
+            });
+        }
     });
 
     $("div").on("click", "#sacuvajKomentarNeuspesna", function () {
@@ -868,7 +941,7 @@
             DatumIVreme: voznja.DatumIVreme,
             Lokacija1: voznja.Lokacija1,
             TipAuta: voznja.TipAuta,
-            Pozivaoc: (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+            Pozivaoc: voznja.Pozivaoc,
             Odrediste: Lokacija2,
             KreatorVoznje: voznja.KreatorVoznje,
             VozacMusterije: voznja.VozacMusterije,
@@ -890,5 +963,20 @@
             }
 
         });
+
+        if (Voznja.Pozivaoc != "") {
+            $.ajax({
+                type: 'PUT',
+                url: 'api/Musterija/' + 0 + "|" + Voznja.Pozivaoc,
+                data: JSON.stringify(Voznja),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        alert("Voznja zakljucena (uspesna)!");
+                    }
+                }
+            });
+        }
     });
 });
