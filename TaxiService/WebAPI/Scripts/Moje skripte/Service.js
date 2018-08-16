@@ -688,6 +688,7 @@
     $("div").on("click", "#obradaVoznjeGotova", function () {
         let Voznja = voznje[index1];
         Voznja.Status = "Obradjena"
+        Voznja.KreatorVoznje = JSON.parse(localStorage.Ulogovan).KorisnickoIme;
 
         $.ajax({
             type: 'PUT',
@@ -768,7 +769,7 @@
                 txt += "<table border='2'>"
                 txt += "<tr><th>Datum i vreme:</th> <th>Grad(Polazak): </th> <th>Ulica i broj(Polazak):</th><th>Pozivaoc voznje:</th> <th>Tip automobila:</th><th>Opcija:</th></tr>"
                 for (var i = 0; i < data.length; i++) {
-                    txt += "<tr><td>" + data[i].DatumIVreme + "</td> <td>" + data[i].Lokacija1.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Lokacija1.Adresa.UlicaBroj + "</td><td>" + data[i].Pozivaoc + "</td> <td id='tipAutaObrada" + i + "'>" + data[i].TipAuta + "</td> <td><button type='button' name='" + i + "' id='prihvatiVoznju' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-ok' ></span> Prihvati voznju</button ></td></tr > ";
+                        txt += "<tr><td>" + data[i].DatumIVreme + "</td> <td>" + data[i].Lokacija1.Adresa.NaseljenoMestoBroj + "</td> <td>" + data[i].Lokacija1.Adresa.UlicaBroj + "</td><td>" + data[i].Pozivaoc + "</td> <td id='tipAutaObrada" + i + "'>" + data[i].TipAuta + "</td> <td><button type='button' name='" + i + "' id='prihvatiVoznju' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-ok' ></span> Prihvati voznju</button ></td></tr > ";
                 }
                 txt += "</table>"
                 txt += "</div>"
@@ -894,25 +895,62 @@
             dataType: 'json',
             success: function (data) {
                 if (data == true) {
-                    alert("Voznja zakljucena (uspesna)!");
+                    if (Voznja.Pozivaoc != "") {
+                        $.ajax({
+                            type: 'PUT',
+                            url: 'api/Musterija/' + 0 + "|" + Voznja.Pozivaoc,
+                            data: JSON.stringify(Voznja),
+                            contentType: 'application/json;charset=utf-8',
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data == true) {
+                                    if (Voznja.KreatorVoznje != "") {
+                                        $.ajax({
+                                            type: 'PUT',
+                                            url: '/api/Dispecer/' + Voznja.KreatorVoznje,
+                                            data: JSON.stringify(Voznja),
+                                            contentType: 'application/json;charset=utf-8',
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                if (!data) {
+                                                    alert("Voznja zakljucena (uspesna)!");
+                                                } else {
+                                                    alert("Voznja nije zakljucena (uspesna)!");
+                                                }
+                                            }
+                                        });
+                                    }
+                                    
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        if (Voznja.KreatorVoznje != "") {
+                            $.ajax({
+                                type: 'PUT',
+                                url: '/api/Dispecer/' + Voznja.KreatorVoznje,
+                                data: JSON.stringify(Voznja),
+                                contentType: 'application/json;charset=utf-8',
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data) {
+                                        alert("Voznja zakljucena (uspesna)!");
+                                    } else {
+                                        alert("Voznja nije zakljucena (uspesna)!");
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+                else {
+                    alert("Voznja nije zakljucena (uspesna)!");
                 }
             }
         });
 
-        if (Voznja.Pozivaoc != "") {
-            $.ajax({
-                type: 'PUT',
-                url: 'api/Musterija/' + 0 + "|" + Voznja.Pozivaoc,
-                data: JSON.stringify(Voznja),
-                contentType: 'application/json;charset=utf-8',
-                dataType: 'json',
-                success: function (data) {
-                    if (data == true) {
-                        alert("Voznja zakljucena (uspesna)!");
-                    }
-                }
-            });
-        }
+
     });
 
     $("div").on("click", "#sacuvajKomentarNeuspesna", function () {
@@ -958,25 +996,59 @@
             dataType: 'json',
             success: function (data) {
                 if (data == true) {
-                    alert("Voznja zakljucena (neuspesno)!");
+                    if (Voznja.Pozivaoc != "") {
+                        $.ajax({
+                            type: 'PUT',
+                            url: 'api/Musterija/' + 0 + "|" + Voznja.Pozivaoc,
+                            data: JSON.stringify(Voznja),
+                            contentType: 'application/json;charset=utf-8',
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data == true) {
+                                    alert("Voznja zakljucena (neuspesna)!");
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        if (Voznja.KreatorVoznje != "") {
+                            $.ajax({
+                                type: 'PUT',
+                                url: '/api/Dispecer/' + Voznja.KreatorVoznje,
+                                data: JSON.stringify(Voznja),
+                                contentType: 'application/json;charset=utf-8',
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data) {
+                                        alert("Voznja zakljucena (uspesna)!");
+                                    } else {
+                                        alert("Voznja nije zakljucena (uspesna)!");
+                                    }
+                                }
+                            });
+                        }
+                        
+                    }
+                }
+                else {
+                    alert("Voznja nije zakljucena (neuspesna)!");
                 }
             }
 
         });
 
-        if (Voznja.Pozivaoc != "") {
-            $.ajax({
-                type: 'PUT',
-                url: 'api/Musterija/' + 0 + "|" + Voznja.Pozivaoc,
-                data: JSON.stringify(Voznja),
-                contentType: 'application/json;charset=utf-8',
-                dataType: 'json',
-                success: function (data) {
-                    if (data == true) {
-                        alert("Voznja zakljucena (uspesna)!");
-                    }
-                }
-            });
-        }
+
     });
+
+    if (localStorage.Ulogovan != "null") {
+        if (JSON.parse(localStorage.Ulogovan).Uloga == "Dispecer") {
+
+        }
+        else if (JSON.parse(localStorage.Ulogovan).Uloga == "Korisnik") {
+            $("#listaVoznji").click();
+        }
+        else if (JSON.parse(localStorage.Ulogovan).Uloga == "Vozac") {
+            
+        }
+    }
 });
