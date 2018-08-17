@@ -38,13 +38,15 @@ namespace WebAPI.Controllers
             {
                 if (String.Equals(lines[i].Split(';')[4], id))
                 {
-                    if (String.Equals(lines[i].Split(';')[12], "0")) {
-                        string temp = "{" + DateTime.Now.ToString() + "," + voznja.Lokacija1.X + "," + voznja.Lokacija1.Y + "," + voznja.Lokacija1.Adresa.UlicaBroj + "," + voznja.Lokacija1.Adresa.NaseljenoMestoBroj + "," + voznja.TipAuta + "," + voznja.Pozivaoc + "," + voznja.Odrediste.X + "," + voznja.Odrediste.Y + "," + voznja.Odrediste.Adresa.UlicaBroj + "," + voznja.Odrediste.Adresa.NaseljenoMestoBroj + "," + voznja.KreatorVoznje + "," + voznja.VozacMusterije + "," + voznja.Iznos.ToString() + "," + "{+++}" + "," + voznja.Status + "}|";
+                    if (!String.Equals(lines[i].Split(';')[12], "1")) {
+                        string temp = "{" + DateTime.Now.ToString() + "," + voznja.Lokacija1.X + "," + voznja.Lokacija1.Y + "," + voznja.Lokacija1.Adresa.UlicaBroj + "," + voznja.Lokacija1.Adresa.NaseljenoMestoBroj + "," + voznja.TipAuta + "," + voznja.Pozivaoc + "," + voznja.Odrediste.X + "," + voznja.Odrediste.Y + "," + voznja.Odrediste.Adresa.UlicaBroj + "," + voznja.Odrediste.Adresa.NaseljenoMestoBroj + "," + voznja.KreatorVoznje + "," + voznja.VozacMusterije + "," + voznja.Iznos.ToString() + "," + "{" + DateTime.Now.ToString() + "+" + voznja.KomentarVoznje.Opis + "+" + voznja.KomentarVoznje.KreatorKomentara + "+" + voznja.KomentarVoznje.Ocena + "}" + "," + voznja.Status + "}|";
                         int index = lines[i].IndexOf('[');
                         string line1 = lines[i].Substring(0, index + 1);
                         string line2 = line1 + temp + lines[i].Substring(index + 1);
                         int duzina = line2.Length;
-                        line2 = line2.Substring(0, duzina - 1) + "1";
+                        if (String.Equals(lines[i].Split(';')[8], "Vozac")) {
+                            line2 = line2.Substring(0, duzina - 1) + "1";
+                        }
                         lines[i] = line2;
 
                         break;
