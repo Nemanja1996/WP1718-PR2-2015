@@ -96,6 +96,7 @@
 
     $("div").on("click", "#posaljiPromene", function () {
         let pol1;
+        let uspesno = true;
         if ($('#Pol1').prop('checked')) {
             pol1 = 'M';
         } else if ($('#Pol2').prop('checked')) {
@@ -112,26 +113,111 @@
             telefon: $('#telefonIzmena').val(),
             email: $('#emailIzmena').val()
         }
+        if (korisnikReg.korisnickoIme === "" || korisnikReg.lozinka === "" || korisnikReg.ime === "" || korisnikReg.prezime === "" || korisnikReg.jmbg === "" || korisnikReg.telefon === "" || korisnikReg.email === "") {
+            alert("Sva polja se moraju popuniti!");
+            uspesno = false;
+        } else {
 
-        $.ajax({
-            type: 'PUT',
-            url: '/api/Registration/' + JSON.parse(localStorage.Ulogovan).KorisnickoIme,
-            data: JSON.stringify(korisnikReg),
-            contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (!data) {
-                    alert("Korisnicko ime vec postoji, neuspesna promena!");
-                } else {
-                    var korisnik = JSON.parse(localStorage.Ulogovan);
-                    korisnik.KorisnickoIme = korisnikReg.korisnickoIme;
-                    localStorage.Ulogovan = JSON.stringify(korisnik);
-                    alert("Uspesno ste izmenili korisnicke informacije!");
-                }
+            if (korisnikReg.korisnickoIme.length < 3 || korisnikReg.korisnickoIme.length > 15) {
+                uspesno = false;
+                $('#korisnickoImeIzmena').css('background-color', '#ff7556');
+                $('#korisnickoImeIzmena').val("");
+                $('#korisnickoImeIzmena').attr('placeholder', 'Mora 3-15 slova!');
+            } else {
+                $('#korisnickoImeIzmena').css('background-color', 'white');
+                $('#korisnickoImeIzmena').attr('placeholder', '');
             }
 
-        });
+            if (korisnikReg.lozinka.length < 4 || korisnikReg.lozinka.length > 15) {
+                uspesno = false;
+                $('#lozinkaIzmena').css('background-color', '#ff7556');
+                $('#lozinkaIzmena').val("");
+                $('#lozinkaIzmena').attr('placeholder', 'Mora 4-15 karaktera!');
+            } else {
+                $('#lozinkaIzmena').css('background-color', 'white');
+                $('#lozinkaIzmena').attr('placeholder', '');
+            }
 
+            if (korisnikReg.ime.length < 2 || korisnikReg.ime.length > 15) {
+                uspesno = false;
+                $('#imeIzmena').css('background-color', '#ff7556');
+                $('#imeIzmena').val("");
+                $('#imeIzmena').attr('placeholder', 'Mora 2-15 slova!');
+            } else {
+                $('#imeIzmena').css('background-color', 'white');
+                $('#imeIzmena').attr('placeholder', '');
+            }
+
+            if (korisnikReg.prezime.length < 3 || korisnikReg.prezime.length > 15) {
+                uspesno = false;
+                $('#prezimeIzmena').css('background-color', '#ff7556');
+                $('#prezimeIzmena').val("");
+                $('#prezimeIzmena').attr('placeholder', 'Mora 3-15 slova!');
+            } else {
+                $('#prezimeIzmena').css('background-color', 'white');
+                $('#prezimeIzmena').attr('placeholder', '');
+            }
+
+            if (korisnikReg.jmbg.length !== 13) {
+                uspesno = false;
+                $('#jmbgIzmena').css('background-color', '#ff7556');
+                $('#jmbgIzmena').val("");
+                $('#jmbgIzmena').attr('placeholder', 'Tačno 13 brojeva!');
+            } else {
+                $('#jmbgIzmena').css('background-color', 'white');
+                $('#jmbgIzmena').attr('placeholder', '');
+
+            }
+
+            if (korisnikReg.telefon.length < 6 || korisnikReg.telefon.length > 7) {
+                uspesno = false;
+                $('#telefonIzmena').css('background-color', '#ff7556');
+                $('#telefonIzmena').val("");
+                $('#telefonIzmena').attr('placeholder', 'Mora 6-7 brojeva!');
+            } else {
+                $('#telefonIzmena').css('background-color', 'white');
+                $('#telefonIzmena').attr('placeholder', '');
+            }
+
+            if (korisnikReg.email.length < 6) {
+                uspesno = false;
+                $('#emailIzmena').css('background-color', '#ff7556');
+                $('#emailIzmena').val("");
+                $('#emailIzmena').attr('placeholder', 'Mora minimum 6 karaktera!');
+            } else {
+                let patern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
+
+                if (patern.test($("#emailIzmena").val())) {
+                    $('#emailIzmena').css('background-color', 'white');
+                    $('#emailIzmena').attr('placeholder', '');
+                } else {
+                    uspesno = false;
+                    $('#emailIzmena').css('background-color', '#ff7556');
+                    $('#emailIzmena').val("");
+                    $('#emailIzmena').attr('placeholder', 'Nevalidna email adresa!');
+                }
+            }
+        }
+            if (uspesno) {
+                $.ajax({
+                    type: 'PUT',
+                    url: '/api/Registration/' + JSON.parse(localStorage.Ulogovan).KorisnickoIme,
+                    data: JSON.stringify(korisnikReg),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (!data) {
+                            alert("Korisnicko ime vec postoji, neuspesna promena!");
+                        } else {
+                            var korisnik = JSON.parse(localStorage.Ulogovan);
+                            korisnik.KorisnickoIme = korisnikReg.korisnickoIme;
+                            localStorage.Ulogovan = JSON.stringify(korisnik);
+                            alert("Uspesno ste izmenili korisnicke informacije!");
+                        }
+                    }
+
+                });
+            }
     });
 
     $("div").on("click", "#izmenaLokacije", function () {
@@ -168,6 +254,7 @@
     });
 
     $("div").on("click", "#posaljiPromeneLokacije", function () {
+        let uspesno = true;
         let adresa = {
             NaseljenoMestoBroj: $("#gradIzmena").val(),
             UlicaBroj: $("#ulicaIzmena").val()
@@ -179,24 +266,30 @@
             Y: $("#yIzmena").val()
         }
 
-        $.ajax({
-            type: 'PUT',
-            url: '/api/Vozac/' + JSON.parse(localStorage.Ulogovan).KorisnickoIme,
-            data: JSON.stringify(Lokacija),
-            contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (!data) {
-                    alert("Greska pri promeni lokacije!");
-                } else {
-                    var korisnik = JSON.parse(localStorage.Ulogovan);
-                    korisnik.Lokacija = Lokacija;
-                    localStorage.Ulogovan = JSON.stringify(korisnik);
-                    alert("Uspesno ste izmenili lokaciju!");
+        if (adresa.NaseljenoMestoBroj === "" || adresa.UlicaBroj === "" || Lokacija.X === "" || Lokacija.Y === "") {
+            alert("Sva polja se moraju popuniti!");
+            uspesno = false;
+        }
+        if (uspesno) {
+            $.ajax({
+                type: 'PUT',
+                url: '/api/Vozac/' + JSON.parse(localStorage.Ulogovan).KorisnickoIme,
+                data: JSON.stringify(Lokacija),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (!data) {
+                        alert("Greska pri promeni lokacije!");
+                    } else {
+                        var korisnik = JSON.parse(localStorage.Ulogovan);
+                        korisnik.Lokacija = Lokacija;
+                        localStorage.Ulogovan = JSON.stringify(korisnik);
+                        alert("Uspesno ste izmenili lokaciju!");
+                    }
                 }
-            }
 
-        });
+            });
+        }
 
     });
 
@@ -218,6 +311,7 @@
     });
 
     $("div").on("click", "#rezervisiVoznju", function () {
+        let uspesno = true;
         let adresa = {
             NaseljenoMestoBroj: $("#gradVoznja").val(),
             UlicaBroj: $("#ulicaVoznja").val()
@@ -228,7 +322,10 @@
             X: "#",
             Y: "#"
         }
-
+        if (adresa.NaseljenoMestoBroj === "" || adresa.UlicaBroj === "" || Lokacija3.X === "" || Lokacija3.Y === "") {
+            alert("Sva polja se moraju popuniti!");
+            uspesno = false;
+        }
         let adresa1 = {
             NaseljenoMestoBroj: "",
             UlicaBroj: ""
@@ -253,21 +350,22 @@
             Status: "KreiranaNaCekanju"
         }
 
-
-        $.ajax({
-            type: 'POST',
-            url: '/api/Musterija',
-            data: JSON.stringify(Voznja),
-            contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (!data) {
-                    alert("Greska pri kreiranju voznje");
-                } else {
-                    alert("Uspesno ste Kreirali voznju");
+        if (uspesno) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/Musterija',
+                data: JSON.stringify(Voznja),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (!data) {
+                        alert("Greska pri kreiranju voznje");
+                    } else {
+                        alert("Uspesno ste Kreirali voznju");
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
     $("div").on("click", "#listaVoznji", function () {
@@ -324,23 +422,33 @@
     });
 
     $("div").on("click", "#sacuvajIzmeneVoznje", function () {
+        let uspesno = true;
+
         voznja1.Lokacija1.Adresa.NaseljenoMestoBroj = $("#gradVoznjaIzmena").val()
         voznja1.Lokacija1.Adresa.UlicaBroj = $("#ulicaVoznjaIzmena").val()
         voznja1.TipAuta = $("#tipAutomobilaIzmena").val()
-        $.ajax({
-            type: 'PUT',
-            url: 'api/Musterija/' + index1 + "|" + (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
-            data: JSON.stringify(voznja1),
-            contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (data == true) {
-                    alert("Voznja uspesno izmenjena!");
 
+        if (voznja1.Lokacija1.Adresa.NaseljenoMestoBroj === "" || voznja1.Lokacija1.Adresa.UlicaBroj === "") {
+            alert("Sva polja se moraju popuniti!");
+            uspesno = false;
+        }
+
+        if (uspesno) {
+            $.ajax({
+                type: 'PUT',
+                url: 'api/Musterija/' + index1 + "|" + (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+                data: JSON.stringify(voznja1),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        alert("Voznja uspesno izmenjena!");
+
+                    }
                 }
-            }
 
-        });
+            });
+        }
     });
 
     $("div").on("click", "#otkaziVoznju", function () {
@@ -375,12 +483,18 @@
     $("div").on("click", "#sacuvajKomentar", function () {
         let index = parseInt($(this).prop("name"));
         let voznja = voznje[index];
+        let uspesno = true
 
         let komentar = {
             Opis: $("#komentarVoznje" + index).val(),
             DatumObjave: "",
             KreatorKomentara: (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
             Ocena: "0"
+        }
+
+        if (komentar.Opis === "") {
+            alert("Mora se popuniti polje za komentar");
+            uspesno = false;
         }
 
         let adresa1 = {
@@ -407,21 +521,22 @@
             Status: "Otkazana"
         }
 
+        if (uspesno) {
+            $.ajax({
+                type: 'PUT',
+                url: 'api/Musterija/' + index + "|" + (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+                data: JSON.stringify(Voznja),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        alert("Voznja uspesno otkazana!");
 
-        $.ajax({
-            type: 'PUT',
-            url: 'api/Musterija/' + index + "|" + (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
-            data: JSON.stringify(Voznja),
-            contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (data == true) {
-                    alert("Voznja uspesno otkazana!");
-
+                    }
                 }
-            }
 
-        });
+            });
+        }
     });
 
     $("div").on("click", "#addDriver", function () {
@@ -431,7 +546,7 @@
         txt += "<table>"
         txt += "<tr><th colspan='2'>Dodavanje vozaca</th></tr>"
         txt += "<tr><th>Ime:</th><td><input type='text' id='imeVozac'/></td></tr>";
-        txt += "<tr><th>Prezime:</th><td><input type='text' id='imeVozac''/></td></tr>";
+        txt += "<tr><th>Prezime:</th><td><input type='text' id='prezimeVozac''/></td></tr>";
         txt += "<tr><th> Pol:</th><td><input checked='true' type='radio' name='pol' value='M' id='Pol1Vozac' />M<input type='radio' name='pol' value='Z' id='Pol2Vozac'/>Z</td></tr>";
         txt += "<tr><th>Jmbg:</th><td><input type='text' id='jmbgVozac'/></td></tr>";
         txt += "<tr><th>Korisnicko ime:</th><td><input type='text' id='korisnickoImeVozac'/></td></tr>";
@@ -455,6 +570,7 @@
 
     $("div").on("click", "#addDriverButton", function () {
         let pol1;
+        let uspesno = true;
         if ($('#Pol1Vozac').prop('checked')) {
             pol1 = 'M';
         } else if ($('#Pol2Vozac').prop('checked')) {
@@ -483,7 +599,7 @@
 
         let korisnikReg = {
             ime: `${$('#imeVozac').val()}`,
-            prezime: `${$('#imeVozac').val()}`,
+            prezime: `${$('#prezimeVozac').val()}`,
             pol: pol1,
             jmbg: `${$('#jmbgVozac').val()}`,
             korisnickoIme: `${$('#korisnickoImeVozac').val()}`,
@@ -495,21 +611,109 @@
             Automobil: Automobil1
         }
 
-        $.ajax({
-            type: 'POST',
-            url: '/api/Dispecer',
-            data: JSON.stringify(korisnikReg),
-            contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (!data) {
-                    alert("Korisnicko ime vec postoji!");
-                } else {
-                    alert("Uspesno ste dodali vozaca!");
-                }
+        if (Automobil1.BrojTaksiVozila === "" || Automobil1.Registracija === "" || Automobil1.Godiste === "" || Lokacija2.Y === "" || Lokacija2.X === "" || adresa1.UlicaBroj === "" || adresa1.NaseljenoMestoBroj === "" || korisnikReg.korisnickoIme === "" || korisnikReg.lozinka === "" || korisnikReg.ime === "" || korisnikReg.prezime === "" || korisnikReg.jmbg === "" || korisnikReg.telefon === "" || korisnikReg.email === "") {
+            alert("Sva polja se moraju popuniti!");
+            uspesno = false;
+        } else {
+
+            if (korisnikReg.korisnickoIme.length < 3 || korisnikReg.korisnickoIme.length > 15) {
+                uspesno = false;
+                $('#korisnickoImeVozac').css('background-color', '#ff7556');
+                $('#korisnickoImeVozac').val("");
+                $('#korisnickoImeVozac').attr('placeholder', 'Mora 3-15 slova!');
+            } else {
+                $('#korisnickoImeVozac').css('background-color', 'white');
+                $('#korisnickoImeVozac').attr('placeholder', '');
             }
 
-        })
+            if (korisnikReg.lozinka.length < 4 || korisnikReg.lozinka.length > 15) {
+                uspesno = false;
+                $('#lozinkaVozac').css('background-color', '#ff7556');
+                $('#lozinkaVozac').val("");
+                $('#lozinkaVozac').attr('placeholder', 'Mora 4-15 karaktera!');
+            } else {
+                $('#lozinkaVozac').css('background-color', 'white');
+                $('#lozinkaVozac').attr('placeholder', '');
+            }
+
+            if (korisnikReg.ime.length < 2 || korisnikReg.ime.length > 15) {
+                uspesno = false;
+                $('#imeVozac').css('background-color', '#ff7556');
+                $('#imeVozac').val("");
+                $('#imeVozac').attr('placeholder', 'Mora 2-15 slova!');
+            } else {
+                $('#imeVozac').css('background-color', 'white');
+                $('#imeVozac').attr('placeholder', '');
+            }
+
+            if (korisnikReg.prezime.length < 3 || korisnikReg.prezime.length > 15) {
+                uspesno = false;
+                $('#prezimeVozac').css('background-color', '#ff7556');
+                $('#prezimeVozac').val("");
+                $('#prezimeVozac').attr('placeholder', 'Mora 3-15 slova!');
+            } else {
+                $('#prezimeVozac').css('background-color', 'white');
+                $('#prezimeVozac').attr('placeholder', '');
+            }
+
+            if (korisnikReg.jmbg.length !== 13) {
+                uspesno = false;
+                $('#jmbgVozac').css('background-color', '#ff7556');
+                $('#jmbgVozac').val("");
+                $('#jmbgVozac').attr('placeholder', 'Tačno 13 brojeva!');
+            } else {
+                $('#jmbgVozac').css('background-color', 'white');
+                $('#jmbgVozac').attr('placeholder', '');
+
+            }
+
+            if (korisnikReg.telefon.length < 6 || korisnikReg.telefon.length > 7) {
+                uspesno = false;
+                $('#telefonVozac').css('background-color', '#ff7556');
+                $('#telefonVozac').val("");
+                $('#telefonVozac').attr('placeholder', 'Mora 6-7 brojeva!');
+            } else {
+                $('#telefonVozac').css('background-color', 'white');
+                $('#telefonVozac').attr('placeholder', '');
+            }
+
+            if (korisnikReg.email.length < 6) {
+                uspesno = false;
+                $('#emailVozac').css('background-color', '#ff7556');
+                $('#emailVozac').val("");
+                $('#emailVozac').attr('placeholder', 'Mora minimum 6 karaktera!');
+            } else {
+                let patern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
+
+                if (patern.test($("#emailVozac").val())) {
+                    $('#emailVozac').css('background-color', 'white');
+                    $('#emailVozac').attr('placeholder', '');
+                } else {
+                    uspesno = false;
+                    $('#emailVozac').css('background-color', '#ff7556');
+                    $('#emailVozac').val("");
+                    $('#emailVozac').attr('placeholder', 'Nevalidna email adresa!');
+                }
+            }
+        }
+
+        if (uspesno) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/Dispecer',
+                data: JSON.stringify(korisnikReg),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (!data) {
+                        alert("Korisnicko ime vec postoji!");
+                    } else {
+                        alert("Uspesno ste dodali vozaca!");
+                    }
+                }
+
+            })
+        }
 
     });
 
@@ -519,44 +723,44 @@
         let grad = $('#gradVoznja1').val();
         let tipAuta = $('#tipAutomobila1').val();
 
-        $.ajax({
-            type: 'GET',
-            url: '/api/Dispecer/' + $('#tipAutomobila1').val(),
-            contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (data.length > 0) {
-                    let txt = "";
-                    txt += "<div class='absolute'>"
-                    txt += "<table>"
-                    txt += "<tr><th colspan='2'>Dodavanje voznje</th></tr>";
 
-                    txt += "<tr><th>Ulica:</th><td><input type='text' id='ulicaVoznja1' value='" + ulica + "'/></td></tr>";
-                    txt += "<tr><th>Grad:</th><td><input type='text' id='gradVoznja1' value='" + grad + "'/></td></tr>";
-                    txt += "<tr><th>Tip automobila:</th><td><select id='tipAutomobila1' value='" + tipAuta + "' disabled><option value='PutnickoVozilo'>PutnickoVozilo</option><option value='TeretnoVozilo'>TeretnoVozilo</option></select></td></tr>"
-                    txt += "<tr><th>Vozac:</th><td><select id='vozac1'>"
-                    for (var i = 0; i < data.length; i++) {
-                        txt += "<option value='" + data[i] + "'>" + data[i] + "</option>"
+            $.ajax({
+                type: 'GET',
+                url: '/api/Dispecer/' + $('#tipAutomobila1').val(),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.length > 0) {
+                        let txt = "";
+                        txt += "<div class='absolute'>"
+                        txt += "<table>"
+                        txt += "<tr><th colspan='2'>Dodavanje voznje</th></tr>";
+
+                        txt += "<tr><th>Ulica:</th><td><input type='text' id='ulicaVoznja1' value='" + ulica + "'/></td></tr>";
+                        txt += "<tr><th>Grad:</th><td><input type='text' id='gradVoznja1' value='" + grad + "'/></td></tr>";
+                        txt += "<tr><th>Tip automobila:</th><td><select id='tipAutomobila1' value='" + tipAuta + "' disabled><option value='PutnickoVozilo'>PutnickoVozilo</option><option value='TeretnoVozilo'>TeretnoVozilo</option></select></td></tr>"
+                        txt += "<tr><th>Vozac:</th><td><select id='vozac1'>"
+                        for (var i = 0; i < data.length; i++) {
+                            txt += "<option value='" + data[i] + "'>" + data[i] + "</option>"
+                        }
+                        txt += "</select></td></tr>"
+                        txt += "<tr><td><button type='button' id='rezervisiVoznju1' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-floppy-saved' ></span> Rezervisi voznju</button ></td></tr>";
+
+                        txt += "</table>"
+                        txt += "</div>"
+                        $(tip).html(txt);
                     }
-                    txt += "</select></td></tr>"
-                    txt += "<tr><td><button type='button' id='rezervisiVoznju1' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-floppy-saved' ></span> Rezervisi voznju</button ></td></tr>";
-
-                    txt += "</table>"
-                    txt += "</div>"
-                    $(tip).html(txt);
+                    else {
+                        alert("Nema slobodnih vozaca!");
+                    }
                 }
-                else {
-                    alert("Nema slobodnih vozaca!");
-                }
-            }
 
-        });
+            });
 
 
     });
 
     $("div").on("click", "#addRide", function () {
-
         let txt = "";
         txt += "<div class='absolute'>"
         txt += "<table>"
@@ -574,6 +778,7 @@
     });
 
     $("div").on("click", "#rezervisiVoznju1", function () {
+        let uspesno = true;
         let adresa = {
             NaseljenoMestoBroj: $("#gradVoznja1").val(),
             UlicaBroj: $("#ulicaVoznja1").val()
@@ -584,7 +789,10 @@
             X: "#",
             Y: "#"
         }
-
+        if (adresa.NaseljenoMestoBroj === "" || adresa.UlicaBroj === "") {
+            alert("Sva polja se moraju popuniti!");
+            uspesno = false;
+        }
         let adresa1 = {
             NaseljenoMestoBroj: "",
             UlicaBroj: ""
@@ -609,21 +817,22 @@
             Status: "Formirana"
         }
 
-
-        $.ajax({
-            type: 'PUT',
-            url: '/api/Dispecer/' + $("#vozac1").val(),
-            data: JSON.stringify(Voznja),
-            contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (!data) {
-                    alert("Greska pri kreiranju voznje");
-                } else {
-                    alert("Uspesno ste Kreirali voznju");
+        if (uspesno) {
+            $.ajax({
+                type: 'PUT',
+                url: '/api/Dispecer/' + $("#vozac1").val(),
+                data: JSON.stringify(Voznja),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (!data) {
+                        alert("Greska pri kreiranju voznje");
+                    } else {
+                        alert("Uspesno ste Kreirali voznju");
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
 
@@ -853,7 +1062,7 @@
     });
 
     $("div").on("click", "#sacuvajUspesna", function () {
-
+        let uspesno = true;
         let voznja = voznja1;
 
         let komentar = {
@@ -862,7 +1071,10 @@
             KreatorKomentara: (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
             Ocena: $("#ocenaUspesna").val()
         }
-
+        if (komentar.Opis === "") {
+            alert("Mora se popuniti polje za komentar");
+            uspesno = false;
+        }
         let adresa1 = {
             NaseljenoMestoBroj: $("#gradOdrediste").val(),
             UlicaBroj: $("#ulicaOdrediste").val()
@@ -887,74 +1099,76 @@
             Status: "Uspesna"
         }
 
-        $.ajax({
-            type: 'PUT',
-            url: 'api/Musterija/' + index1 + "|" + (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
-            data: JSON.stringify(Voznja),
-            contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (data == true) {
-                    if (Voznja.Pozivaoc != "") {
-                        $.ajax({
-                            type: 'PUT',
-                            url: 'api/Musterija/' + 0 + "|" + Voznja.Pozivaoc,
-                            data: JSON.stringify(Voznja),
-                            contentType: 'application/json;charset=utf-8',
-                            dataType: 'json',
-                            success: function (data) {
-                                if (data == true) {
-                                    if (Voznja.KreatorVoznje != "") {
-                                        $.ajax({
-                                            type: 'PUT',
-                                            url: '/api/Dispecer/' + Voznja.KreatorVoznje,
-                                            data: JSON.stringify(Voznja),
-                                            contentType: 'application/json;charset=utf-8',
-                                            dataType: 'json',
-                                            success: function (data) {
-                                                if (!data) {
-                                                    alert("Voznja zakljucena (uspesna)!");
-                                                } else {
-                                                    alert("Voznja nije zakljucena (uspesna)!");
-                                                }
-                                            }
-                                        });
-                                    }
-                                    
-                                }
-                            }
-                        });
-                    }
-                    else {
-                        if (Voznja.KreatorVoznje != "") {
+        if (uspesno) {
+            $.ajax({
+                type: 'PUT',
+                url: 'api/Musterija/' + index1 + "|" + (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+                data: JSON.stringify(Voznja),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        if (Voznja.Pozivaoc != "") {
                             $.ajax({
                                 type: 'PUT',
-                                url: '/api/Dispecer/' + Voznja.KreatorVoznje,
+                                url: 'api/Musterija/' + 0 + "|" + Voznja.Pozivaoc,
                                 data: JSON.stringify(Voznja),
                                 contentType: 'application/json;charset=utf-8',
                                 dataType: 'json',
                                 success: function (data) {
-                                    if (data) {
-                                        alert("Voznja zakljucena (uspesna)!");
-                                    } else {
-                                        alert("Voznja nije zakljucena (uspesna)!");
+                                    if (data == true) {
+                                        if (Voznja.KreatorVoznje != "") {
+                                            $.ajax({
+                                                type: 'PUT',
+                                                url: '/api/Dispecer/' + Voznja.KreatorVoznje,
+                                                data: JSON.stringify(Voznja),
+                                                contentType: 'application/json;charset=utf-8',
+                                                dataType: 'json',
+                                                success: function (data) {
+                                                    if (!data) {
+                                                        alert("Voznja zakljucena (uspesna)!");
+                                                    } else {
+                                                        alert("Voznja nije zakljucena (uspesna)!");
+                                                    }
+                                                }
+                                            });
+                                        }
+
                                     }
                                 }
                             });
                         }
+                        else {
+                            if (Voznja.KreatorVoznje != "") {
+                                $.ajax({
+                                    type: 'PUT',
+                                    url: '/api/Dispecer/' + Voznja.KreatorVoznje,
+                                    data: JSON.stringify(Voznja),
+                                    contentType: 'application/json;charset=utf-8',
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        if (data) {
+                                            alert("Voznja zakljucena (uspesna)!");
+                                        } else {
+                                            alert("Voznja nije zakljucena (uspesna)!");
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    else {
+                        alert("Voznja nije zakljucena (uspesna)!");
                     }
                 }
-                else {
-                    alert("Voznja nije zakljucena (uspesna)!");
-                }
-            }
-        });
+            });
+        }
 
 
     });
 
     $("div").on("click", "#sacuvajKomentarNeuspesna", function () {
-
+        let uspesno = true;
         let voznja = voznja1;
 
         let komentar = {
@@ -963,7 +1177,10 @@
             KreatorKomentara: (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
             Ocena: "0"
         }
-
+        if (komentar.Opis === "") {
+            alert("Mora se popuniti polje za komentar");
+            uspesno = false;
+        }
         let adresa1 = {
             NaseljenoMestoBroj: "",
             UlicaBroj: ""
@@ -988,54 +1205,56 @@
             Status: "Neuspesna"
         }
 
-        $.ajax({
-            type: 'PUT',
-            url: 'api/Musterija/' + index1 + "|" + (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
-            data: JSON.stringify(Voznja),
-            contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (data == true) {
-                    if (Voznja.Pozivaoc != "") {
-                        $.ajax({
-                            type: 'PUT',
-                            url: 'api/Musterija/' + 0 + "|" + Voznja.Pozivaoc,
-                            data: JSON.stringify(Voznja),
-                            contentType: 'application/json;charset=utf-8',
-                            dataType: 'json',
-                            success: function (data) {
-                                if (data == true) {
-                                    alert("Voznja zakljucena (neuspesna)!");
-                                }
-                            }
-                        });
-                    }
-                    else {
-                        if (Voznja.KreatorVoznje != "") {
+        if (uspesno) {
+            $.ajax({
+                type: 'PUT',
+                url: 'api/Musterija/' + index1 + "|" + (JSON.parse(localStorage.Ulogovan)).KorisnickoIme,
+                data: JSON.stringify(Voznja),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        if (Voznja.Pozivaoc != "") {
                             $.ajax({
                                 type: 'PUT',
-                                url: '/api/Dispecer/' + Voznja.KreatorVoznje,
+                                url: 'api/Musterija/' + 0 + "|" + Voznja.Pozivaoc,
                                 data: JSON.stringify(Voznja),
                                 contentType: 'application/json;charset=utf-8',
                                 dataType: 'json',
                                 success: function (data) {
-                                    if (data) {
-                                        alert("Voznja zakljucena (uspesna)!");
-                                    } else {
-                                        alert("Voznja nije zakljucena (uspesna)!");
+                                    if (data == true) {
+                                        alert("Voznja zakljucena (neuspesna)!");
                                     }
                                 }
                             });
                         }
-                        
+                        else {
+                            if (Voznja.KreatorVoznje != "") {
+                                $.ajax({
+                                    type: 'PUT',
+                                    url: '/api/Dispecer/' + Voznja.KreatorVoznje,
+                                    data: JSON.stringify(Voznja),
+                                    contentType: 'application/json;charset=utf-8',
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        if (data) {
+                                            alert("Voznja zakljucena (uspesna)!");
+                                        } else {
+                                            alert("Voznja nije zakljucena (uspesna)!");
+                                        }
+                                    }
+                                });
+                            }
+
+                        }
+                    }
+                    else {
+                        alert("Voznja nije zakljucena (neuspesna)!");
                     }
                 }
-                else {
-                    alert("Voznja nije zakljucena (neuspesna)!");
-                }
-            }
 
-        });
+            });
+        }
 
 
     });
